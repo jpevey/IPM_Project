@@ -101,23 +101,23 @@ def main():
     print("Setting up IPM matlab functions!")
 
     print("Creating matlab functions...")
-    print("...IPM main script")
+    print("...   IPM main script")
     file_ = open("cyl_1d_interior_point_algo.m", 'w')
     ipm_file_string_ = ipm_file_string.replace("%%%py_function_path%%%", os.getcwd())
     file_.write(ipm_file_string_)
     file_.close()
 
-    print("...IPM function")
+    print("...   IPM function")
     file_ = open("cyl_1d_cyl_constraint.m", 'w')
     file_.write(ipm_function)
     file_.close()
 
-    print("...IPM constraint function")
+    print("...   IPM constraint function")
     file_ = open("cyl_1d_twenty_var.m", 'w')
     file_.write(ipm_function)
     file_.close()
 
-    print("... Building IPM sh")
+    print("...   Building IPM sh")
     file_ = open("run_matlab.sh", 'w')
     file_.write(ipm_sh_string)
     file_.close()
