@@ -1,0 +1,30 @@
+job_title, interior_point_test_
+write_out_file, True
+sdf_file, tsunami_run_.sdf
+output_file_string, interior_point_test_output.csv
+output_csv_file_headers,time#solver_type#keff#linear_keff#keno_keff#tsunami_keff#original_linear_keff#material_1_sense*20#material_2_sense*20#beta_sens*20#betas*20#proposed_betas*20
+materials, poison#fuel/moderator:25/75
+### keno_threshold - Maximum change in beta value where a keno job is forced to run
+### i.e, if the maximum % change in beta is above this value, keno is forced to run
+keno_threshold, 0.10
+### tsunami_threshold - Maximum change in beta value where a tsunami job is forced to run
+### i.e, if the maximum % change in beta is above this value, tsunami is forced to run
+tsunami_threshold, 0.25
+### tsunami and keno template file names
+tsunami_template_filename, tsunami_cyls_20_material_template.inp
+kenov_template_filename, kenov_cyls_20_material_template.inp
+### unique flag to put on keno and tsunami runs
+keno_filename_flag, keno_run_
+tsunami_filename_flag, tsunami_run_
+default_run_tsunami_keff_percentage_threshold, 0.1
+### scale_solver - how to run scale. local or necluster
+scale_solver, necluster
+by_default_run_keno, True
+### debug_run_scale - set to False to not run scale at all (for debugging)
+debug_run_scale, True
+run_tsunami_every_step, False
+store_best_keff, True
+multithreaded_clutch_on_necluster, True
+tsunami_type, Clutch
+number_of_clutch_jobs, 40
+sensitivity_dict_mt_tsunami, sensitivity_dict_mt_tsunami
