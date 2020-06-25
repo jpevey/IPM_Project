@@ -1,13 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e22de3ef-53c2-4db1-afd7-5961effbab21" name="Default Changelist" comment="" />
+    <list default="true" id="e22de3ef-53c2-4db1-afd7-5961effbab21" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/options.csv" beforeDir="false" afterPath="$PROJECT_DIR$/options.csv" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IgnoredFileRootStore">
+    <option name="generatedRoots">
+      <set>
+        <option value="C:\Users\John\PycharmProjects\IPM_Project\.idea" />
+      </set>
+    </option>
+  </component>
   <component name="ProjectId" id="1dp90MPHtaFjNAR5plzQTMuZ7QD" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showExcludedFiles" value="true" />
@@ -15,8 +31,10 @@
     <option name="showMembers" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="settings.editor.selected.configurable" value="settings.github" />
   </component>
   <component name="RunManager">
     <configuration name="py_funct" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
@@ -76,10 +94,14 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="141" y="226" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1536.824@0.0.1536.824" timestamp="1593115235125" />
-    <state x="607" y="331" width="345" height="162" key="Github.CreateGistDialog" timestamp="1593116685910">
+    <state x="607" y="331" width="345" height="162" key="Github.CreateGistDialog" timestamp="1593117509852">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="607" y="331" width="345" height="162" key="Github.CreateGistDialog/0.0.1536.824@0.0.1536.824" timestamp="1593116685910" />
+    <state x="607" y="331" width="345" height="162" key="Github.CreateGistDialog/0.0.1536.824@0.0.1536.824" timestamp="1593117509852" />
+    <state x="260" y="315" width="259" height="200" key="Github.ShareDialog" timestamp="1593117715363">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="260" y="315" width="259" height="200" key="Github.ShareDialog/0.0.1536.824@0.0.1536.824" timestamp="1593117715363" />
     <state width="1537" height="218" key="GridCell.Tab.0.bottom" timestamp="1593116099307">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -96,9 +118,9 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state width="1537" height="218" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1593116099307" />
-    <state x="279" y="58" key="SettingsEditor" timestamp="1593115222617">
+    <state x="0" y="61" key="SettingsEditor" timestamp="1593117682808">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="279" y="58" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1593115222617" />
+    <state x="0" y="61" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1593117682808" />
   </component>
 </project>
