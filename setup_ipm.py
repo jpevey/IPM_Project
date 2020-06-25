@@ -81,6 +81,22 @@ g = [ output{2}{1} output{2}{2} output{2}{3} output{2}{4} output{2}{5}...
       output{2}{16} output{2}{17} output{2}{18} output{2}{19} output{2}{20}];
 """
 
+ipm_sh_string = """#!/bin/bash
+#!/usr/bin/python3
+#PBS -V
+#PBS -q corei7
+#PBS -l nodes=1:ppn=1
+#PBS -l pmem=3500mb
+
+#### cd working directory (where you submitted your job)
+cd ${PBS_O_WORKDIR}
+
+#### load module
+module load matlab/R2019a
+
+#### Executable Line
+matlab -nodisplay -nodesktop -nojvm -nosplash -r 'run cyl_1d_interior_point_algo.m; exit'"""
+
 def main():
     print("Setting up IPM matlab functions!")
 
@@ -101,6 +117,10 @@ def main():
     file_.write(ipm_function)
     file_.close()
 
-constraint_string
+    print("... Building IPM sh")
+    file_ = open("run_matlab.sh", 'w')
+    file_.write(ipm_sh_string)
+    file_.close()
+
 if __name__ == "__main__":
     main()
