@@ -1,16 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e22de3ef-53c2-4db1-afd7-5961effbab21" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+    <list default="true" id="e22de3ef-53c2-4db1-afd7-5961effbab21" name="Default Changelist" comment="flipping materials fuel:mat_1 psn:mat_2">
+      <change afterPath="$PROJECT_DIR$/setup_ipm.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/options.csv" beforeDir="false" afterPath="$PROJECT_DIR$/options.csv" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -87,13 +92,37 @@
       <option name="presentableId" value="Default" />
       <updated>1593110943155</updated>
     </task>
+    <task id="LOCAL-00001" summary="flipping materials fuel:mat_1 psn:mat_2">
+      <created>1593119098139</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1593119098139</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="flipping materials fuel:mat_1 psn:mat_2" />
+    <option name="LAST_COMMIT_MESSAGE" value="flipping materials fuel:mat_1 psn:mat_2" />
   </component>
   <component name="WindowStateProjectService">
     <state x="141" y="226" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1593115235125">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="141" y="226" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1536.824@0.0.1536.824" timestamp="1593115235125" />
+    <state x="436" y="12" key="CommitChangelistDialog2" timestamp="1593119587531">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="436" y="12" key="CommitChangelistDialog2/0.0.1536.824@0.0.1536.824" timestamp="1593119587531" />
+    <state x="147" y="71" key="DiffContextDialog" timestamp="1593119582032">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="147" y="71" key="DiffContextDialog/0.0.1536.824@0.0.1536.824" timestamp="1593119582032" />
+    <state x="549" y="171" key="FileChooserDialogImpl" timestamp="1593119617822">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="549" y="171" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1593119617822" />
     <state x="607" y="331" width="345" height="162" key="Github.CreateGistDialog" timestamp="1593117509852">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -122,5 +151,17 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="0" y="61" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1593117682808" />
+    <state x="0" y="152" key="Vcs.Push.Dialog.v2" timestamp="1593119843033">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="0" y="152" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1593119843033" />
+    <state x="538" y="150" key="VcsDiffUtil.ChangesDialog" timestamp="1593119606476">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="538" y="150" key="VcsDiffUtil.ChangesDialog/0.0.1536.824@0.0.1536.824" timestamp="1593119606476" />
+    <state x="580" y="332" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1593119494814">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="580" y="332" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1536.824@0.0.1536.824" timestamp="1593119494814" />
   </component>
 </project>
