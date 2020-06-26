@@ -659,22 +659,23 @@ class tsunami_job_object:
         if header == 'original_linear_keff':
             return str(self.original_linear_keff)
 
+### material 1 and 2 senses are multiplied by -1 to betas that increase k be positive, those that decrease, be negative
         if 'material_1_sense' in header:
             sense_str = ""
             for sense in self.material_1_sensitivities:
-                sense_str += str(sense) + ","
+                sense_str += str(sense * -1) + ","
             return sense_str[:-1]
 
         if 'material_2_sense' in header:
             sense_str = ""
             for sense in self.material_2_sensitivities:
-                sense_str += str(sense) + ","
+                sense_str += str(sense * -1) + ","
             return sense_str[:-1]
 
         if 'beta_sens' in header:
             beta_str = ""
             for beta in self.beta_sensitivities:
-                beta_str += str(beta) + ","
+                beta_str += str(beta * -1) + ","
             return beta_str[:-1]
 
         return header + "_FAILED"

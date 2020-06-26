@@ -237,11 +237,11 @@ grep -a "final result" %%%input_string%%%.out > %%%input_string%%%_done.dat"""
     def build_template_file_for_tsunami(self, betas, template_filename, new_template_filename = "tsunami_template_default"):
         scale_handler = self.sfh
         material_betas = betas
-        default_material_list = self.build_material_dictionaries()
+        materials = scale_handler.build_material_dictionaries()
         self.build_scale_input_from_beta(
                                             material_betas = material_betas,
-                                            material_1=default_material_list[0],
-                                            material_2=default_material_list[1],
+                                            material_1 = materials[0],
+                                            material_2 = materials[1],
                                             flag = "%material_replace%",
                                             flag_replacement_string = 'replace',
                                             template_file_string = template_filename,
