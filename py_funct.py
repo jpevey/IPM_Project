@@ -532,14 +532,14 @@ class tsunami_job_object:
         print(
             "percent_change_in_poison, percent_change_in_fuel_mod, expected_change_psn, expected_change_fm, expected_delta_k")
         for material_count, beta_change in enumerate(proposed_betas):
-            percent_change_in_poison = beta_change / material_betas_default[material_count] - 1
-            percent_change_in_fuel_mod = (1 - beta_change) / (1 - material_betas_default[material_count]) - 1
+            percent_change_in_mat_1 = beta_change / material_betas_default[material_count] - 1
+            percent_change_in_mat_2 = (1 - beta_change) / (1 - material_betas_default[material_count]) - 1
 
-            expected_change_psn = percent_change_in_poison * self.poison_sens_list[material_count] * original_keff
-            expected_change_fm = percent_change_in_fuel_mod * self.fuelmod_sens_list[material_count] * original_keff
-            expected_delta_k += expected_change_psn + expected_change_fm
+            expected_change_mat_1 = percent_change_in_mat_1 * self.material_1_sensitivities[material_count] * original_keff
+            expected_change_mat_2 = percent_change_in_mat_2 * self.material_2_sensitivities[material_count] * original_keff
+            expected_delta_k += expected_change_mat_1 + expected_change_mat_2
             # print(material_count, expected_change_psn, expected_change_fm)
-            print(percent_change_in_poison, percent_change_in_fuel_mod, expected_change_psn, expected_change_fm,
+            print(percent_change_in_mat_1, percent_change_in_mat_2, expected_change_mat_1, expected_change_mat_2,
                   expected_delta_k)
         print("linear keff guess", expected_delta_k + original_keff)
 
