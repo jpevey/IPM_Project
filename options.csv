@@ -3,7 +3,7 @@ write_out_file, True
 sdf_file, tsunami_run_.sdf
 output_file_string, interior_point_test_output.csv
 output_csv_file_headers,time#solver_type#keff#linear_keff#keno_keff#tsunami_keff#original_linear_keff#material_1_sense*20#material_2_sense*20#beta_sens*20#betas*20#proposed_betas*20
-materials, fuel/moderator:25/75#poison
+materials, poison#fuel/moderator:25/75
 ### keno_threshold - Maximum change in beta value where a keno job is forced to run
 ### i.e, if the maximum % change in beta is above this value, keno is forced to run
 keno_threshold, 0.10
