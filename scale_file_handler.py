@@ -53,20 +53,29 @@ class scale_file_handler:
         materials_original['poison']['cd-114'] = 1.33210E-02
         materials_original['poison']['cd-116'] = 3.47968E-03
 
-        materials_original['stainless_steel_304']['c'] = 0.000160
-        materials_original['stainless_steel_304']['si'] = 0.000858
-        materials_original['stainless_steel_304']['si-28'] = XXX
-        materials_original['stainless_steel_304']['si-29'] = XXX
-        materials_original['stainless_steel_304']['si-30'] = XXX
-
-
-        materials_original['stainless_steel_304']['p'] = 0.000036
-        materials_original['stainless_steel_304']['s'] = 0.000023
-        materials_original['stainless_steel_304']['cr'] = 0.017605
-        materials_original['stainless_steel_304']['mn'] = 0.000877
-        materials_original['stainless_steel_304']['fe'] = 0.060538
-        materials_original['stainless_steel_304']['n-14'] = 0.007593
-
+        materials_original['stainless_steel_304']['c'] = 6.02E-05
+        materials_original['stainless_steel_304']['si-28'] = 7.94E-04
+        materials_original['stainless_steel_304']['si-29'] = 3.91E-05
+        materials_original['stainless_steel_304']['si-30'] = 2.49E-05
+        materials_original['stainless_steel_304']['p-31'] = 3.58E-05
+        materials_original['stainless_steel_304']['s-32'] = 2.15E-05
+        materials_original['stainless_steel_304']['s-33'] = 1.64E-07
+        materials_original['stainless_steel_304']['s-34'] = 9.04E-07
+        materials_original['stainless_steel_304']['s-36'] = 2.01E-09
+        materials_original['stainless_steel_304']['cr-50'] = 7.96E-04
+        materials_original['stainless_steel_304']['cr-52'] = 1.48E-02
+        materials_original['stainless_steel_304']['cr-53'] = 1.64E-03
+        materials_original['stainless_steel_304']['cr-54'] = 4.01E-04
+        materials_original['stainless_steel_304']['mn-55'] = 8.77E-04
+        materials_original['stainless_steel_304']['fe-54'] = 3.63E-03
+        materials_original['stainless_steel_304']['fe-56'] = 5.49E-02
+        materials_original['stainless_steel_304']['fe-57'] = 1.25E-03
+        materials_original['stainless_steel_304']['fe-58'] = 1.62E-04
+        materials_original['stainless_steel_304']['ni-58'] = 5.66E-03
+        materials_original['stainless_steel_304']['ni-60'] = 2.11E-03
+        materials_original['stainless_steel_304']['ni-61'] = 9.01E-05
+        materials_original['stainless_steel_304']['ni-62'] = 2.83E-04
+        materials_original['stainless_steel_304']['ni-64'] = 6.98E-05
         return materials_original
         
 ### This function returns the materials as found in #2-20 of tsunami_cyl.inp
