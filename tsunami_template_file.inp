@@ -33,7 +33,7 @@ read param
  nsk=105
  npg=25000
  gen=10000
- tme=20000
+ tme=480
  rnd=%%%random_number%%%
 end param
 read geometry
