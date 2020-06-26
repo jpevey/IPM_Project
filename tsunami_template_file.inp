@@ -28,12 +28,12 @@ end composition
 read param
  cet=1
  cfp=5
- cgd=yes
+ cgd=01
+ asg=0.0005
  nsk=105
- msh=1
  npg=25000
  gen=10000
- tme=240
+ tme=20000
  rnd=%%%random_number%%%
 end param
 read geometry
@@ -62,6 +62,11 @@ cylinder 20 1 48.45095665 2.54 0.0
   cuboid 0 2 48.45095665 -48.45095665 48.45095665 -48.45095665 2.54 0  
 hole 1 0 0 0
 end geometry
+read gridgeometry 01
+xlinear 971 -48.46 48.46
+ylinear 971 -48.46 48.46
+zlinear 1    -0.1   2.64
+end gridgeometry
 read boundary 
 XYF=void 
 ZFC=reflect
