@@ -63,8 +63,8 @@ cylinder 20 1 48.45095665 2.54 0.0
 hole 1 0 0 0
 end geometry
 read gridgeometry 01
-xlinear 971 -48.46 48.46
-ylinear 971 -48.46 48.46
+xlinear 808 -48.46 48.46
+ylinear 808 -48.46 48.46
 zlinear 1    -0.1   2.64
 end gridgeometry
 read boundary 
