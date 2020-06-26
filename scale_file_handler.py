@@ -121,7 +121,7 @@ class scale_file_handler:
                     print("Unable to combine more than 2 materials into a default material... fix this")
                     exit()
 
-                mat_dict = self.sfh.combine_material_dicts(materials[local_material_list[0]],
+                mat_dict = self.combine_material_dicts(materials[local_material_list[0]],
                                                            materials[local_material_list[1]],
                                                            int(local_material_ratio[0]))
             else:

@@ -55,11 +55,12 @@ class tsunami_job_object:
 
         ### Reading in options file
         self.read_in_options('options.csv')
+        ### Creating default material definitions
+        self.default_materials_list = self.sfh.build_material_dictionaries(self.materials)
         ### Populating default values
         print("Reading in default values")
         self.create_default_tsunami_object()
-        ### Creating default material definitions
-        self.default_materials_list = self.sfh.build_material_dictionaries(self.materials)
+
 
         ### Setting default necluster scale scripts
         self.multithreaded_scale_script = \
