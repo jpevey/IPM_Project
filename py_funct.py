@@ -167,12 +167,15 @@ class tsunami_job_object:
 
     def create_default_tsunami_object(self):
         print("Using default tsunami object")
-        self.tsunami_betas = [0.9, 0.9, 0.9, 0.9, 0.9,
-                              0.9, 0.9, 0.9, 0.9, 0.9,
-                              0.9, 0.9, 0.9, 0.9, 0.9,
-                              0.9, 0.9, 0.9, 0.9, 0.9]
+        self.tsunami_betas = [0.5, 0.5, 0.5, 0.5, 0.5,
+                              0.5, 0.5, 0.5, 0.5, 0.5,
+                              0.5, 0.5, 0.5, 0.5, 0.5,
+                              0.5, 0.5, 0.5, 0.5, 0.5]
         self.tsunami_keff = 0.17738
-        self.update_sensitivities("tsunami_rerun_1_.sdf")
+        try:
+            self.update_sensitivities("tsunami_rerun_1_.sdf")
+        except:
+            print("failed to update default sensitivities. is the default sdf not the same as the materials in this case?")
 
     def create_output_csv(self):
         print("Creating output csv file:", self.output_file_string)
@@ -573,8 +576,13 @@ class tsunami_job_object:
                     continue
 
                 sum_ = 0.0
+
                 for isotope in material_dict:
-                    sum_ += float(self.sensitivities[material_loc][isotope]['sensitivity'])
+                    try:
+                        sum_ += float(self.sensitivities[material_loc][isotope]['sensitivity'])
+                    except:
+                        print("WARNING: Missing sensitivities for: "+isotope+\
+                              " If this is not in the first step there's a problem. Otherwise, the default sdf may not have all of the isotopes required. ")
                 sensitivity_sum_list.append(sum_)
 
             material_sens_lists.append(sensitivity_sum_list)
