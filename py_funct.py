@@ -579,7 +579,7 @@ class tsunami_job_object:
 
         material_sens_lists = []
         ### For each material type in the problem location in the problem
-        for mat_count, material_dict in enumerate(materials_list):
+        for mat_count, material_dict in enumerate(materials_list, start = 1):
             ### Sum all poison and fuel/mod sensitivities
             sensitivity_sum_list = []
             for material_loc in self.sensitivities:
