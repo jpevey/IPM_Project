@@ -109,7 +109,7 @@ def main():
 
     print("...   IPM function")
     file_ = open("cyl_1d_cyl_constraint.m", 'w')
-    file_.write(ipm_function)
+    file_.write(constraint_string)
     file_.close()
 
     print("...   IPM constraint function")
