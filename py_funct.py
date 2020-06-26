@@ -324,7 +324,6 @@ class tsunami_job_object:
         ### Build scale input
         material_betas = self.proposed_betas
         scale_handler = self.sfh
-        materials = scale_handler.create_three_TCR_material_dicts()
 
         ### Building material dictionaries based on options file
         default_material_list = self.build_material_dictionaries
