@@ -55,12 +55,13 @@ class tsunami_job_object:
 
         ### Reading in options file
         self.read_in_options('options.csv')
+
         ### Creating default material definitions
         self.default_materials_list = self.sfh.build_material_dictionaries(self.materials)
+
         ### Populating default values
         print("Reading in default values")
         self.create_default_tsunami_object()
-
 
         ### Setting default necluster scale scripts
         self.multithreaded_scale_script = \
@@ -68,35 +69,34 @@ class tsunami_job_object:
             #PBS -q gen5
             #PBS -V
             #PBS -l nodes=3:ppn=8
-            
+
             module unload mpi
             module load openmpi/1.8.8-gnu
             module load scale/dev
             cat ${PBS_NODEFILE}
             #NP=$(grep -c node ${PBS_NODEFILE})
-            
+
             cd $PBS_O_WORKDIR
-            
+
             #echo $NP
             scalerte -m -N 24 -M ${PBS_NODEFILE} -T /home/tmp_scale/$USER/scale.$$ %%%input_flag%%%.inp
             grep -a "final result" %%%input_flag%%%.inp.out > %%%input_flag%%%.inp_done.dat
             """
         self.singlethreaded_scale_script = \
             """#!/bin/bash
-            
+
             #PBS -q corei7
             #PBS -V
             #PBS -l nodes=1:ppn=1
-            
+
             module load scale/6.2.3
-            
+
             cd $PBS_O_WORKDIR
-            
+
             scalerte -m %%%input_flag%%%.inp
             grep -a "final result" %%%input_flag%%%.inp.out > %%%input_flag%%%.inp_done.dat"""
 
-
-        ### Looks for the running output file as described in the options file, 
+        ### Looks for the running output file as described in the options file,
         ### if it is not there one is created for this new job
         found_tsunami_output = False
         for file in os.listdir("."):
@@ -361,8 +361,8 @@ class tsunami_job_object:
                     mt_tools = MT_Clutch_Tools_v1.MT_Clutch_Tools(template_file="tsunami_template_file.inp",
                                                                   neutrons_per_generation=25000,
                                                                   skip_generations=105,
-                                                                  list_of_material_dictionaries =
-                                                                                            self.default_materials_list)
+                                                                  list_of_material_dictionaries=
+                                                                  self.default_materials_list)
                     combined_sdf_dict = mt_tools.run_mt_clutch_job(betas=self.proposed_betas,
                                                                    number_of_cases=int(self.number_of_clutch_jobs),
                                                                    file_flag=file_name_flag)
@@ -390,8 +390,6 @@ class tsunami_job_object:
 
         keff = self.sfh.data_dict[file_name_flag + '.out']['keff']
         return keff
-
-
 
     def build_scale_submission_script(self, file_name_flag, solve_type):
         if solve_type == 'keno':
@@ -519,8 +517,10 @@ class tsunami_job_object:
             percent_change_in_mat_1 = beta_change / material_betas_default[material_count] - 1
             percent_change_in_mat_2 = (1 - beta_change) / (1 - material_betas_default[material_count]) - 1
 
-            expected_change_mat_1 = percent_change_in_mat_1 * self.material_1_sensitivities[material_count] * original_keff
-            expected_change_mat_2 = percent_change_in_mat_2 * self.material_2_sensitivities[material_count] * original_keff
+            expected_change_mat_1 = percent_change_in_mat_1 * self.material_1_sensitivities[
+                material_count] * original_keff
+            expected_change_mat_2 = percent_change_in_mat_2 * self.material_2_sensitivities[
+                material_count] * original_keff
             expected_delta_k += expected_change_mat_1 + expected_change_mat_2
             # print(material_count, expected_change_psn, expected_change_fm)
             print(percent_change_in_mat_1, percent_change_in_mat_2, expected_change_mat_1, expected_change_mat_2,
@@ -529,7 +529,7 @@ class tsunami_job_object:
 
         return expected_delta_k + original_keff
 
-### deprecated
+    ### deprecated
     def combine_sensitivities(self):
         # scale_handler = self.sfh
         materials = self.sfh.build_default_material_dicts()
@@ -563,7 +563,7 @@ class tsunami_job_object:
 
         material_sens_lists = []
         ### For each material type in the problem location in the problem
-        for mat_count, material_dict in enumerate(materials_list, start = 1):
+        for mat_count, material_dict in enumerate(materials_list, start=1):
             ### Sum all poison and fuel/mod sensitivities
             sensitivity_sum_list = []
             for material_loc in self.sensitivities:
@@ -644,7 +644,7 @@ class tsunami_job_object:
         if header == 'original_linear_keff':
             return str(self.original_linear_keff)
 
-### material 1 and 2 senses are multiplied by -1 to betas that increase k be positive, those that decrease, be negative
+        ### material 1 and 2 senses are multiplied by -1 to betas that increase k be positive, those that decrease, be negative
         if 'material_1_sense' in header:
             sense_str = ""
             for sense in self.material_1_sensitivities:
