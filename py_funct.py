@@ -326,7 +326,7 @@ class tsunami_job_object:
         scale_handler = self.sfh
 
         ### Building material dictionaries based on options file
-        default_material_list = self.build_material_dictionaries
+        default_material_list = self.build_material_dictionaries()
 
         self.build_scale_input_from_beta(scale_handler,
                                          material_betas=material_betas,
@@ -405,7 +405,7 @@ class tsunami_job_object:
                 mat_dict = materials[material_definition]
 
             list_of_material_dictionaries.append(mat_dict)
-
+        print("list of materials:", list_of_material_dictionaries)
         return list_of_material_dictionaries
 
     def build_scale_submission_script(self, file_name_flag, solve_type):
@@ -453,7 +453,7 @@ class tsunami_job_object:
     def calculate_sensitivies(self):
         sensitivities = []
         for mat_count, poison_sensitivity in enumerate(self.poison_sens_list):
-            fuelmod_sensitivity = self.fuelmod_sens_list[mat_count]
+            fuelmod_sensitivity = self.material_2_sensitivity[mat_count]
             beta_ = self.tsunami_betas[mat_count]
 
             beta_diff = 0.01
@@ -481,7 +481,7 @@ class tsunami_job_object:
     def calculate_sensitivities_2_materials_general(self):
         sensitivities = []
         for mat_count, material_1_sensitivity in enumerate(self.material_1_sensitivities):
-            material_2_sensitivity = self.fuelmod_sens_list[mat_count]
+            material_2_sensitivity = self.material_2_sensitivities[mat_count]
             beta_ = self.tsunami_betas[mat_count]
 
             beta_diff = 0.01
