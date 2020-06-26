@@ -107,6 +107,29 @@ class scale_file_handler:
         materials_original['original_tcr_poison']['cd-114'] = 1.349760E-03
         materials_original['original_tcr_poison']['cd-116'] = 3.587760E-04
 
+    def build_material_dictionaries(self, default_materials_definition_from_options):
+        list_of_material_dictionaries = []
+        materials = self.build_default_material_dicts()
+        for material_definition in default_materials_definition_from_options:
+            ### If it is a mixture of two or more materials:
+            if ":" in material_definition:
+                mat_dif_split = material_definition.split(":")
+                local_material_list = mat_dif_split[0].split("/")
+                local_material_ratio = mat_dif_split[1].split("/")
+
+                if len(local_material_list) > 2:
+                    print("Unable to combine more than 2 materials into a default material... fix this")
+                    exit()
+
+                mat_dict = self.sfh.combine_material_dicts(materials[local_material_list[0]],
+                                                           materials[local_material_list[1]],
+                                                           int(local_material_ratio[0]))
+            else:
+                mat_dict = materials[material_definition]
+
+            list_of_material_dictionaries.append(mat_dict)
+        return list_of_material_dictionaries
+
     def perturb_dict(self, data_dict, perturbation = 0):
         perturbation = perturbation / 100
     

@@ -58,6 +58,8 @@ class tsunami_job_object:
         ### Populating default values
         print("Reading in default values")
         self.create_default_tsunami_object()
+        ### Creating default material definitions
+        self.default_materials_list = self.sfh.build_material_dictionaries(self.materials)
 
         ### Setting default necluster scale scripts
         self.multithreaded_scale_script = \
@@ -91,6 +93,7 @@ class tsunami_job_object:
             
             scalerte -m %%%input_flag%%%.inp
             grep -a "final result" %%%input_flag%%%.inp.out > %%%input_flag%%%.inp_done.dat"""
+
 
         ### Looks for the running output file as described in the options file, 
         ### if it is not there one is created for this new job
@@ -326,7 +329,7 @@ class tsunami_job_object:
         scale_handler = self.sfh
 
         ### Building material dictionaries based on options file
-        default_material_list = self.build_material_dictionaries()
+        default_material_list = self.default_materials_list
 
         self.build_scale_input_from_beta(scale_handler,
                                          material_betas=material_betas,
@@ -355,7 +358,10 @@ class tsunami_job_object:
                     file_name_flag = "mt_tsunami_"
                     ### Solving with MT Tsunami tools
                     mt_tools = MT_Clutch_Tools_v1.MT_Clutch_Tools(template_file="tsunami_template_file.inp",
-                                                                  neutrons_per_generation=25000, skip_generations=105)
+                                                                  neutrons_per_generation=25000,
+                                                                  skip_generations=105,
+                                                                  list_of_material_dictionaries =
+                                                                                            self.default_materials_list)
                     combined_sdf_dict = mt_tools.run_mt_clutch_job(betas=self.proposed_betas,
                                                                    number_of_cases=int(self.number_of_clutch_jobs),
                                                                    file_flag=file_name_flag)
@@ -384,29 +390,7 @@ class tsunami_job_object:
         keff = self.sfh.data_dict[file_name_flag + '.out']['keff']
         return keff
 
-    def build_material_dictionaries(self):
-        list_of_material_dictionaries = []
-        materials = self.sfh.build_default_material_dicts()
-        for material_definition in self.materials:
-            ### If it is a mixture of two or more materials:
-            if ":" in material_definition:
-                mat_dif_split = material_definition.split(":")
-                local_material_list = mat_dif_split[0].split("/")
-                local_material_ratio = mat_dif_split[1].split("/")
 
-                if len(local_material_list) > 2:
-                    print("Unable to combine more than 2 materials into a default material... fix this")
-                    exit()
-
-                mat_dict = self.sfh.combine_material_dicts(materials[local_material_list[0]],
-                                                           materials[local_material_list[1]],
-                                                           int(local_material_ratio[0]))
-            else:
-                mat_dict = materials[material_definition]
-
-            list_of_material_dictionaries.append(mat_dict)
-        print("list of materials:", list_of_material_dictionaries)
-        return list_of_material_dictionaries
 
     def build_scale_submission_script(self, file_name_flag, solve_type):
         if solve_type == 'keno':
@@ -574,7 +558,7 @@ class tsunami_job_object:
         self.fuelmod_sens_list = fuelmod_sens_list
 
     def combine_sensitivities_by_list(self):
-        materials_list = self.build_material_dictionaries()
+        materials_list = self.default_materials_list
 
         material_sens_lists = []
         ### For each material type in the problem location in the problem

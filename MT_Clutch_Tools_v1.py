@@ -15,11 +15,11 @@ import collections
 
 
 class MT_Clutch_Tools:
-    def __init__(self, template_file,  neutrons_per_generation, skip_generations):
+    def __init__(self, template_file,  neutrons_per_generation, skip_generations, list_of_material_dictionaries):
         self.neutrons_per_generation = neutrons_per_generation
         self.skip_generations = skip_generations
         self.template_file = template_file
-        
+        self.list_of_material_dictionaries = list_of_material_dictionaries
         
         self.sfh = scale_file_handler.scale_file_handler()
         
@@ -235,9 +235,9 @@ grep -a "final result" %%%input_string%%%.out > %%%input_string%%%_done.dat"""
         self.sfh.create_scale_input_given_target_dict(template_file_string, file_name_flag, material_dict)
 
     def build_template_file_for_tsunami(self, betas, template_filename, new_template_filename = "tsunami_template_default"):
-        scale_handler = self.sfh
+
         material_betas = betas
-        materials = scale_handler.build_material_dictionaries()
+        materials = self.list_of_material_dictionaries
         self.build_scale_input_from_beta(
                                             material_betas = material_betas,
                                             material_1 = materials[0],
