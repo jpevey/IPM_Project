@@ -29,11 +29,10 @@ read param
  cet=1
  cfp=5
  cgd=01
- asg=0.0005
  nsk=105
  npg=25000
  gen=10000
- tme=480
+ tme=180
  rnd=%%%random_number%%%
 end param
 read geometry

@@ -111,7 +111,7 @@ class tsunami_job_object:
                     self.tsunami_keff, _ = self.sfh.get_keff_and_uncertainty("tsunami_run_.out")
 
                     ### Reading in tsunami sensitivities
-                    self.update_sensitivities("tsunami_run_.sdf")
+                    self.update_sensitivities()
 
                     print("Betas before and after reading in from pickle")
                     print(self.tsunami_betas)
@@ -148,7 +148,7 @@ class tsunami_job_object:
                 value_list = []
                 line_split_2 = line_split[1].split('#')
                 for val in line_split_2:
-                    value_list.append(val)
+                    value_list.append(val.strip())
                 value = value_list
             # print(line_split[0].strip(), value)
             try:
@@ -158,6 +158,7 @@ class tsunami_job_object:
             setattr(self, line_split[0].strip(), value)
 
     def read_in_pickle(self, pickle_file_string, read_in_as_attribute):
+        print("Reading file:",pickle_file_string, "as:",read_in_as_attribute)
         pickle_in = open(pickle_file_string, 'rb')
         setattr(self, read_in_as_attribute, pickle.load(pickle_in))
 
@@ -172,10 +173,8 @@ class tsunami_job_object:
                               0.5, 0.5, 0.5, 0.5, 0.5,
                               0.5, 0.5, 0.5, 0.5, 0.5]
         self.tsunami_keff = 0.17738
-        try:
-            self.update_sensitivities("tsunami_rerun_1_.sdf")
-        except:
-            print("failed to update default sensitivities. is the default sdf not the same as the materials in this case?")
+
+        self.update_sensitivities()
 
     def create_output_csv(self):
         print("Creating output csv file:", self.output_file_string)
@@ -239,7 +238,7 @@ class tsunami_job_object:
         ### If above tsunami threshold, run with tsunami
         if max_proposed_change >= float(self.tsunami_threshold):
             keff = self.scale_solve('tsunami')
-            self.update_sensitivities("tsunami_run_.sdf")
+            self.update_sensitivities()
             self.beta_sensitivities = self.calculate_sensitivities_2_materials_general()
             self.keff = keff
             self.solver_type = 'tsunami'
@@ -389,7 +388,7 @@ class tsunami_job_object:
                 self.sensitivities = combined_sdf_dict
                 self.combine_sensitivities_by_list()
             else:
-                self.update_sensitivities("tsunami_run_.sdf")
+                self.update_sensitivities()
 
         keff = self.sfh.data_dict[file_name_flag + '.out']['keff']
         return keff
@@ -430,9 +429,14 @@ class tsunami_job_object:
             total_time += 15
             time.sleep(15)
 
-    def update_sensitivities(self, sdf_file):
-        self.sensitivities = self.sfh.parse_sdf_file_into_dict(sdf_file)
-        self.combine_sensitivities_by_list()
+    def update_sensitivities(self):
+        print("Updating sensitivites v2")
+        if self.multithreaded_clutch_on_necluster == 'True':
+            self.read_in_pickle(pickle_file_string=self.sensitivity_dict_mt_tsunami,
+                                  read_in_as_attribute='sensitivities')
+        else:
+            self.sensitivities = self.sfh.parse_sdf_file_into_dict(self.sdf_file)
+            self.combine_sensitivities_by_list()
 
     ### This function takes the current tsunami sensitvities (%k/%number dense) and solves for the sensitivity to changes in
     ### caluculates the sensitivity of change to beta
