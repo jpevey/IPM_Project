@@ -244,41 +244,6 @@ grep -a "final result" %%%input_string%%%.out > %%%input_string%%%_done.dat"""
             template_file_string=template_filename,
             file_name_flag=new_template_filename)
 
-# In[ ]:
-
-
-# MT_Clutch_Tools = MT_Clutch_Tools(template_file = "tsunami_template_file.inp", neutrons_per_generation = 25000, skip_generations = 105)
-
-
-# In[ ]:
-
-
-#### Build scale input
-# scale_handler = scale_file_handler.scale_file_handler()
-# material_betas = [0.1, 0.2]
-# materials = scale_handler.create_three_TCR_material_dicts()
-# MT_Clutch_Tools.build_scale_input_from_beta(
-#                                    material_betas = material_betas,
-#                                    material_1 = materials['poison'], 
-#                                    material_2 = scale_handler.combine_material_dicts(materials['fuel'], materials['moderator'], 25),
-#                                    flag = "%material_replace%",
-#                                    flag_replacement_string = 'replace',
-#                                    template_file_string = "tsunami_cyls_20_material_template.inp",
-#                                    file_name_flag = "tsunami_template_file")
-
-
-# In[ ]:
-
-
-# MT_Clutch_Tools.build_template_file_for_tsunami(betas = [2.93E-07,0.110491681,0.093210444,0.143226178,0.185224491,0.186605268,0.265882272,0.293065216,0.318516283,0.357410704,0.424753155,0.466120207,0.567273237,0.746464482,0.930763956,0.988429075,0.984501592,0.99967498,0.967807146,0.982663663])
-
-
-# In[ ]:
-
-
-# betas = [2.93E-07,0.110491681,0.093210444,0.143226178,0.185224491,0.186605268,0.265882272,0.293065216,0.318516283,0.357410704,0.424753155,0.466120207,0.567273237,0.746464482,0.930763956,0.988429075,0.984501592,0.99967498,0.967807146,0.982663663]
-
-# MT_Clutch_Tools.run_mt_clutch_job(betas = betas, number_of_cases = 50, file_flag = "mt_tsunami_")
 
 
 

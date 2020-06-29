@@ -15,7 +15,7 @@ class scale_file_handler:
 
     ### Functions Related to materials
 
-    ### Materials from Interior_Point_Materials_TCR_Cd.xls
+    ### Materials from Interior_Point_Materials_()_Cd.xls
     def build_default_material_dicts(self):
 
         materials_original = collections.OrderedDict()
@@ -78,34 +78,6 @@ class scale_file_handler:
         materials_original['stainless_steel_304']['ni-64'] = 6.98E-05
         return materials_original
 
-    ### This function returns the materials as found in #2-20 of tsunami_cyl.inp
-    def create_incorrect_TCR_materials(self):
-        materials_original = collections.OrderedDict()
-        materials_original['original_tct_mix'] = collections.OrderedDict()
-        materials_original['original_tcr_mix']['u-234'] = 9.139650E-06
-        materials_original['original_tcr_mix']['u-235'] = 1.031330E-03
-        materials_original['original_tcr_mix']['u-236'] = 4.764330E-06
-        materials_original['original_tcr_mix']['u-238'] = 4.230100E-03
-        materials_original['original_tcr_mix']['n-14'] = 3.111040E-04
-        materials_original['original_tcr_mix']['si-28'] = 1.448100E-02
-        materials_original['original_tcr_mix']['si-29'] = 7.619320E-04
-        materials_original['original_tcr_mix']['si-30'] = 5.201640E-04
-        materials_original['original_tcr_mix']['c'] = 7.590480E-03
-        materials_original['original_tcr_mix']['he-3'] = 3.606160E-12
-        materials_original['original_tcr_mix']['he-4'] = 4.785760E-06
-        materials_original['original_tcr_mix']['y-89'] = 3.159810E-02
-        materials_original['original_tcr_mix']['h-1'] = 6.088560E-04
-        materials_original['original_tcr_mix']['h-2'] = 1.399450E-07
-
-        materials_original['original_tcr_poison'] = collections.OrderedDict()
-        materials_original['original_tcr_poison']['cd-106'] = 5.456510E-05
-        materials_original['original_tcr_poison']['cd-108'] = 3.958320E-05
-        materials_original['original_tcr_poison']['cd-110'] = 5.648810E-04
-        materials_original['original_tcr_poison']['cd-111'] = 5.851130E-04
-        materials_original['original_tcr_poison']['cd-112'] = 1.112040E-03
-        materials_original['original_tcr_poison']['cd-113'] = 5.691400E-04
-        materials_original['original_tcr_poison']['cd-114'] = 1.349760E-03
-        materials_original['original_tcr_poison']['cd-116'] = 3.587760E-04
 
     def build_material_dictionaries(self, default_materials_definition_from_options):
         list_of_material_dictionaries = []
