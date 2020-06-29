@@ -29,4 +29,4 @@ multithreaded_clutch_on_necluster, True
 tsunami_type, Clutch
 number_of_clutch_jobs, 40
 sensitivity_dict_mt_tsunami, sensitivity_dict_mt_tsunami
-evaluate_options, solve_og_linear_keff#calc_keno_keff#calc_tsunami_keff_and_sens:threshold$lin_to_keno_k_sig_uncert%3#solve_linear_keff
+evaluate_options, solve_og_linear_keff#calc_keno_keff
