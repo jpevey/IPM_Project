@@ -23,11 +23,11 @@ def evaluate_1d_cyl(proposed_betas):
     #### Returns the keff value and the type of evaluation used to get it
     #### can be 'tsunami', 'keno', 'linear_approximation'
     #### print out the linearly predicted keff along with acctual k either with keno or tsunami
-
-    if current_tsunami_job.by_default_run_keno == 'True':
-        current_tsunami_job.evaluate_current_step_run_keno_first()
-    else:
-        current_tsunami_job.evaluate_current_step()
+    current_tsunami_job.evaluate_current_step_v3()
+    #if current_tsunami_job.by_default_run_keno == 'True':
+    #    current_tsunami_job.evaluate_current_step_run_keno_first()
+    #else:
+    #    current_tsunami_job.evaluate_current_step()
 
     #### saving current job data to file
     #### add timestamp to output
@@ -168,10 +168,10 @@ class tsunami_job_object:
 
     def create_default_tsunami_object(self):
         print("Using default tsunami object")
-        self.tsunami_betas = [0.5, 0.5, 0.5, 0.5, 0.5,
-                              0.5, 0.5, 0.5, 0.5, 0.5,
-                              0.5, 0.5, 0.5, 0.5, 0.5,
-                              0.5, 0.5, 0.5, 0.5, 0.5]
+        self.tsunami_betas = [0.1, 0.1, 0.1, 0.1, 0.1,
+                              0.1, 0.1, 0.1, 0.1, 0.1,
+                              0.1, 0.1, 0.1, 0.1, 0.1,
+                              0.1, 0.1, 0.1, 0.1, 0.1]
         self.tsunami_keff = 0.17738
 
         self.update_sensitivities()
@@ -310,6 +310,100 @@ class tsunami_job_object:
 
         return keff, 'keno'
 
+    def evaluate_current_step_v3(self):
+        print("Evaluating current step based on options:", self.evaluate_options)
+
+        for step_count, opt_ in enumerate(self.evaluate_options):
+            print("Evaluation step count and opt:", step_count, opt_)
+            self.evaluation_options(opt_)
+
+    def evaluation_options(self, option):
+        try:
+            option, modifier = option.split(":")
+        except:
+            modifier = "Default"
+
+        if option == "calc_max_proposed_beta_change":
+            max_proposed_change = 0.0
+            for material_loc in self.proposed_changes:
+                for value in material_loc:
+                    if abs(value) > max_proposed_change:
+                        max_proposed_change = abs(value)
+            print("max of proposed change:", max_proposed_change)
+            self.max_proposed_change = max_proposed_change
+            return
+
+        if option == "solve_og_linear_keff":
+            self.linear_keff = self.linear_approximation_of_keff()
+            self.original_linear_keff = self.linear_keff
+            ### Updating solver debug
+            self.solver_debug = self.solver_debug + "_linear_og"
+
+        if option == "solve_linear_keff":
+            self.linear_keff = self.linear_approximation_of_keff()
+            ### Updating solver debug
+            self.solver_debug = self.solver_debug + "_linear"
+
+        if option == "calc_keno_keff":
+            if modifier == "threshold":
+                if self.keff_threshold():
+                    ### Solving for k with keno
+                    self.keno_keff, self.keno_keff_uncert = self.scale_solve_v2('keno')
+                    ### Updating solver debug
+                    self.solver_debug = self.solver_debug + "_met_threshold_keno"
+            else:
+                ### Solving for k with keno
+                self.keno_keff, self.keno_keff_uncert = self.scale_solve_v2('keno')
+                ### Updating solver debug
+                self.solver_debug = self.solver_debug + "_keno"
+
+        if option == "calc_tsunami_keff_and_sens":
+            ###
+            if "threshold" in modifier:
+                threshold_options_split = modifier.split("$")
+                if self.tsunami_threshold(threshold_options_split[1]):
+                    ### Solving for k with tsunami
+                    self.tsunami_keff, self.tsunami_keff_uncert = self.scale_solve_v2('tsunami')
+                    ### Updating beta sensitivities
+                    self.beta_sensitivities = self.calculate_sensitivities_2_materials_general()
+                    ### Updating solver debug
+                    self.solver_debug = self.solver_debug + "_met_threshold_tsunami"
+            else:
+                ### Solving for k with tsunami
+                self.tsunami_keff, self.tsunami_keff_uncert = self.scale_solve_v2('tsunami')
+                ### Updating beta sensitivities
+                self.beta_sensitivities = self.calculate_sensitivities_2_materials_general()
+                ### Updating solver debug
+                self.solver_debug = self.solver_debug + "_tsunami"
+
+    def keno_threshold(self):
+       print("Not working, shouldn't be here!")
+       os.exit()
+       pass
+
+    def tsunami_threshold(self, threshold_options):
+        ### If using linear to keno comparison: If lin keff outside of k uncert * multiplier,
+        ### re-running tsunami
+        if "lin_to_keno_k_sig_uncert" in threshold_options:
+            ### getting sig_uncert value
+            try:
+                threshold_options_ = threshold_options.split('%')
+                uncert_multiplier = float(threshold_options_[1])
+            except:
+                ### If not specified, defaulting to 3*uncertainty as threshold
+                uncert_multiplier = 3.0
+
+            ### Checking if lin keff is outside of keno keff threshold
+            if (self.linear_keff > self.keno_keff + uncert_multiplier * self.keno_keff_uncert) or\
+               (self.linear_keff < self.keno_keff - uncert_multiplier * self.keno_keff_uncert):
+                print("Linear keff is outside of acceptable bounds of keno keff, rerunning Tsunami")
+                self.tsunami_threshold = True
+                return self.tsunami_threshold
+            else:
+                print("Linear keff is within acceptable bounds of keno keff, not rerunning Tsunami")
+                self.tsunami_threshold = False
+                return self.tsunami_threshold
+
     def scale_solve(self, solve_type):
         if self.debug_run_scale == 'False':
             print("Skipping scale calculation")
@@ -392,6 +486,91 @@ class tsunami_job_object:
 
         keff = self.sfh.data_dict[file_name_flag + '.out']['keff']
         return keff
+
+    def scale_solve_v2(self, solve_type):
+        if self.debug_run_scale == 'False':
+            print("Skipping scale calculation")
+            return 99.99
+        print("SOLVING WITH SCALE")
+        if solve_type == 'keno':
+            template_file_string = self.kenov_template_filename
+            file_name_flag = self.keno_filename_flag
+        if solve_type == 'tsunami':
+            template_file_string = self.tsunami_template_filename
+            file_name_flag = self.tsunami_filename_flag
+
+        keff = 0.0
+        ### Solving MT tsunami
+
+        ###   Building inputs
+
+        ### Build scale input
+        material_betas = self.proposed_betas
+        scale_handler = self.sfh
+
+        ### Building material dictionaries based on options file
+        default_material_list = self.default_materials_list
+
+        self.build_scale_input_from_beta(scale_handler,
+                                         material_betas=material_betas,
+                                         material_1=default_material_list[0],
+                                         material_2=default_material_list[1],
+                                         flag="%material_replace%",
+                                         flag_replacement_string='replace',
+                                         template_file_string=template_file_string,
+                                         file_name_flag=file_name_flag)
+
+        if self.scale_solver == 'local':
+            ### Run scale file
+            print("Running: ", file_name_flag + '.inp')
+
+            print("Ran: ", file_name_flag + '.inp')
+
+        if self.scale_solver == 'necluster':
+            if solve_type == 'keno':
+                print("Submitting to NEcluster")
+                self.build_scale_submission_script(file_name_flag, solve_type)
+                self.submit_jobs_to_necluster(file_name_flag)
+                self.wait_on_submitted_job(file_name_flag)
+            if solve_type == 'tsunami':
+                if self.multithreaded_clutch_on_necluster == 'True':
+                    print("Solving MT Tsunami")
+                    file_name_flag = "mt_tsunami_"
+                    ### Solving with MT Tsunami tools
+                    mt_tools = MT_Clutch_Tools_v1.MT_Clutch_Tools(template_file="tsunami_template_file.inp",
+                                                                  neutrons_per_generation=25000,
+                                                                  skip_generations=105,
+                                                                  list_of_material_dictionaries=
+                                                                  self.default_materials_list)
+                    combined_sdf_dict = mt_tools.run_mt_clutch_job(betas=self.proposed_betas,
+                                                                   number_of_cases=int(self.number_of_clutch_jobs),
+                                                                   file_flag=file_name_flag)
+                    ### Pickling this file for later
+                    self.combined_sdf_dict = combined_sdf_dict
+                    self.write_out_pickle(pickle_file_string=self.sensitivity_dict_mt_tsunami,
+                                          write_out_attribute='combined_sdf_dict')
+                    file_name_flag = file_name_flag + "0"
+                else:
+                    print("Submitting to NEcluster")
+                    self.build_scale_submission_script(file_name_flag, solve_type)
+                    self.submit_jobs_to_necluster(file_name_flag)
+                    self.wait_on_submitted_job(file_name_flag)
+
+        ### Get keff
+        self.sfh.get_keff_and_uncertainty(file_name_flag + '.out')
+
+        ### Update sensitivites if needed
+        if solve_type == 'tsunami':
+            if self.multithreaded_clutch_on_necluster == 'True':
+                self.sensitivities = combined_sdf_dict
+                self.combine_sensitivities_by_list()
+            else:
+                self.update_sensitivities()
+
+        keff = self.sfh.data_dict[file_name_flag + '.out']['keff']
+        uncert = self.sfh.data_dict[file_name_flag + '.out']['keff_uncertainty']
+
+        return keff, uncert
 
     def build_scale_submission_script(self, file_name_flag, solve_type):
         if solve_type == 'keno':
