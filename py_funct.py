@@ -377,6 +377,8 @@ class tsunami_job_object:
                 ### Updating solver debug
                 self.solver_debug = self.solver_debug + "_tsunami"
 
+        if option == "return_to_matlab":
+            pass
     def keno_threshold(self):
        print("Not working, shouldn't be here!")
        os.exit()
