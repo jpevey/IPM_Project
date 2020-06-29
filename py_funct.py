@@ -338,6 +338,7 @@ class tsunami_job_object:
             self.original_linear_keff = self.linear_keff
             ### Updating solver debug
             self.solver_debug = self.solver_debug + "_linear_og"
+            self.keff = self.linear_keff
 
         if option == "solve_linear_keff":
             self.linear_keff = self.linear_approximation_of_keff()
