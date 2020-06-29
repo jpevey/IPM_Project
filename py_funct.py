@@ -24,9 +24,9 @@ def evaluate_1d_cyl(proposed_betas):
     #### can be 'tsunami', 'keno', 'linear_approximation'
     #### print out the linearly predicted keff along with acctual k either with keno or tsunami
     current_tsunami_job.evaluate_current_step_v3()
-    #if current_tsunami_job.by_default_run_keno == 'True':
+    # if current_tsunami_job.by_default_run_keno == 'True':
     #    current_tsunami_job.evaluate_current_step_run_keno_first()
-    #else:
+    # else:
     #    current_tsunami_job.evaluate_current_step()
 
     #### saving current job data to file
@@ -158,7 +158,7 @@ class tsunami_job_object:
             setattr(self, line_split[0].strip(), value)
 
     def read_in_pickle(self, pickle_file_string, read_in_as_attribute):
-        print("Reading file:",pickle_file_string, "as:",read_in_as_attribute)
+        print("Reading file:", pickle_file_string, "as:", read_in_as_attribute)
         pickle_in = open(pickle_file_string, 'rb')
         setattr(self, read_in_as_attribute, pickle.load(pickle_in))
 
@@ -173,8 +173,10 @@ class tsunami_job_object:
                               0.1, 0.1, 0.1, 0.1, 0.1,
                               0.1, 0.1, 0.1, 0.1, 0.1]
         self.tsunami_keff = 0.17738
-
         self.update_sensitivities()
+        self.combine_sensitivities_by_list()
+
+        self.beta_sensitivities = self.calculate_sensitivities_2_materials_general()
 
     def create_output_csv(self):
         print("Creating output csv file:", self.output_file_string)
@@ -379,10 +381,11 @@ class tsunami_job_object:
 
         if option == "return_to_matlab":
             pass
+
     def keno_threshold(self):
-       print("Not working, shouldn't be here!")
-       os.exit()
-       pass
+        print("Not working, shouldn't be here!")
+        os.exit()
+        pass
 
     def tsunami_threshold(self, threshold_options):
         ### If using linear to keno comparison: If lin keff outside of k uncert * multiplier,
@@ -397,8 +400,8 @@ class tsunami_job_object:
                 uncert_multiplier = 3.0
 
             ### Checking if lin keff is outside of keno keff threshold
-            if (self.linear_keff > self.keno_keff + uncert_multiplier * self.keno_keff_uncert) or\
-               (self.linear_keff < self.keno_keff - uncert_multiplier * self.keno_keff_uncert):
+            if (self.linear_keff > self.keno_keff + uncert_multiplier * self.keno_keff_uncert) or \
+                    (self.linear_keff < self.keno_keff - uncert_multiplier * self.keno_keff_uncert):
                 print("Linear keff is outside of acceptable bounds of keno keff, rerunning Tsunami")
                 self.tsunami_threshold = True
                 return self.tsunami_threshold
@@ -615,7 +618,7 @@ class tsunami_job_object:
         print("Updating sensitivites v2")
         if self.multithreaded_clutch_on_necluster == 'True':
             self.read_in_pickle(pickle_file_string=self.sensitivity_dict_mt_tsunami,
-                                  read_in_as_attribute='sensitivities')
+                                read_in_as_attribute='sensitivities')
         else:
             self.sensitivities = self.sfh.parse_sdf_file_into_dict(self.sdf_file)
             self.combine_sensitivities_by_list()
@@ -767,7 +770,7 @@ class tsunami_job_object:
                     try:
                         sum_ += float(self.sensitivities[material_loc][isotope]['sensitivity'])
                     except:
-                        print("WARNING: Missing sensitivities for: "+isotope+\
+                        print("WARNING: Missing sensitivities for: " + isotope + \
                               " If this is not in the first step there's a problem. Otherwise, the default sdf may not have all of the isotopes required. ")
                 sensitivity_sum_list.append(sum_)
 
