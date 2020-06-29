@@ -52,7 +52,7 @@ class tsunami_job_object:
     def __init__(self, sfh, proposed_betas):
         self.sfh = sfh
         self.proposed_betas = proposed_betas
-
+        self.solver_debug = "initialized"
         ### Reading in options file
         self.read_in_options('options.csv')
 
