@@ -23,6 +23,7 @@ class scale_file_handler:
         materials_original['moderator'] = collections.OrderedDict()
         materials_original['poison'] = collections.OrderedDict()
         materials_original['stainless_steel_304'] = collections.OrderedDict()
+        materials_original['void'] = collections.OrderedDict()
 
         materials_original['fuel']['u-234'] = 5.99675E-06
         materials_original['fuel']['u-235'] = 6.73792E-04
@@ -76,6 +77,9 @@ class scale_file_handler:
         materials_original['stainless_steel_304']['ni-61'] = 9.01E-05
         materials_original['stainless_steel_304']['ni-62'] = 2.83E-04
         materials_original['stainless_steel_304']['ni-64'] = 6.98E-05
+
+
+        materials_original['void']["""\'"""] = 0
         return materials_original
 
 

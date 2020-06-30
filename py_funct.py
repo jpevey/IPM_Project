@@ -364,7 +364,7 @@ class tsunami_job_object:
             ###
             if "threshold" in modifier:
                 threshold_options_split = modifier.split("$")
-                if self.tsunami_threshold(threshold_options_split[1]):
+                if self.tsunami_threshold_function(threshold_options_split[1]):
                     ### Solving for k with tsunami
                     self.tsunami_keff, self.tsunami_keff_uncert = self.scale_solve_v2('tsunami')
                     ### Updating beta sensitivities
@@ -387,7 +387,7 @@ class tsunami_job_object:
         os.exit()
         pass
 
-    def tsunami_threshold(self, threshold_options):
+    def tsunami_threshold_function(self, threshold_options):
         ### If using linear to keno comparison: If lin keff outside of k uncert * multiplier,
         ### re-running tsunami
         if "lin_to_keno_k_sig_uncert" in threshold_options:
@@ -400,8 +400,8 @@ class tsunami_job_object:
                 uncert_multiplier = 3.0
 
             ### Checking if lin keff is outside of keno keff threshold
-            if (self.linear_keff > self.keno_keff + uncert_multiplier * self.keno_keff_uncert) or \
-                    (self.linear_keff < self.keno_keff - uncert_multiplier * self.keno_keff_uncert):
+            if(float(self.linear_keff) > float(self.keno_keff) + float(uncert_multiplier) * float(self.keno_keff_uncert)) or \
+                    (float(self.linear_keff) < float(self.keno_keff) - float(uncert_multiplier) * float(self.keno_keff_uncert)):
                 print("Linear keff is outside of acceptable bounds of keno keff, rerunning Tsunami")
                 self.tsunami_threshold = True
                 return self.tsunami_threshold
@@ -575,7 +575,7 @@ class tsunami_job_object:
 
         keff = self.sfh.data_dict[file_name_flag + '.out']['keff']
         uncert = self.sfh.data_dict[file_name_flag + '.out']['keff_uncertainty']
-
+        print("keff, uncert!!!", solve_type, keff, uncert)
         return keff, uncert
 
     def build_scale_submission_script(self, file_name_flag, solve_type):
