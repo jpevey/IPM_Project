@@ -78,7 +78,6 @@ class scale_file_handler:
         materials_original['stainless_steel_304']['ni-62'] = 2.83E-04
         materials_original['stainless_steel_304']['ni-64'] = 6.98E-05
 
-
         materials_original['void']["""\'"""] = 0
         return materials_original
 
