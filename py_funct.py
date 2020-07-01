@@ -854,13 +854,13 @@ class tsunami_job_object:
         if 'material_1_sense' in header:
             sense_str = ""
             for sense in self.material_1_sensitivities:
-                sense_str += str(sense * -1) + ","
+                sense_str += str(sense) + ","
             return sense_str[:-1]
 
         if 'material_2_sense' in header:
             sense_str = ""
             for sense in self.material_2_sensitivities:
-                sense_str += str(sense * -1) + ","
+                sense_str += str(sense) + ","
             return sense_str[:-1]
 
         if 'beta_sens' in header:
