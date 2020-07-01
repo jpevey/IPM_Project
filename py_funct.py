@@ -367,6 +367,8 @@ class tsunami_job_object:
             self.tsunami_betas = self.proposed_betas
 
             if "threshold" in modifier:
+                print("Applying tsunami threshold")
+                ### Getting tsunami threshold options
                 threshold_options_split = modifier.split("$")
                 if self.tsunami_threshold_function(threshold_options_split[1]):
                     ### Solving for k with tsunami
