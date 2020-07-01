@@ -256,6 +256,34 @@ class scale_file_handler:
                     data_dict[material][isotope]['uncertainty'] = uncert
         return data_dict
 
+    def build_scale_input_from_beta(self,
+                                    material_betas,
+                                    material_1,
+                                    material_2,
+                                    template_file_string,
+                                    flag,
+                                    flag_replacement_string='replace',
+                                    temperature=300,
+                                    material_count_offset=1,
+                                    file_name_flag='default_'):
+        material_list = []
+        for beta in material_betas:
+            material_list.append(self.combine_material_dicts(material_1, material_2, beta))
+
+        material_string_list = []
+        for count, material in enumerate(material_list):
+            material_string_list.append(
+                self.build_scale_material_string(material, count + material_count_offset, temperature))
+
+        ### Making list of keys
+        flag_list = []
+        for x in range(len(material_string_list)):
+            flag_list.append(flag.replace(flag_replacement_string, str(x)))
+
+        material_dict = self.make_data_dict(flag_list, material_string_list)
+
+        self.create_scale_input_given_target_dict(template_file_string, file_name_flag, material_dict)
+
     def writeout_total_sensitivity_per_material_per_isotope(self, data_dict, output_file_string):
         output_file = open(output_file_string, 'w')
         for material in data_dict:

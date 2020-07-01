@@ -126,6 +126,8 @@ class tsunami_job_object:
                                         read_in_as_attribute='sensitivities')
                     print("self.sensitivities", self.sensitivities)
                     print("self.sensitivity_dict_mt_tsunami", self.sensitivity_dict_mt_tsunami)
+                    print("Loading in tsunami beta values")
+                    self.read_in_pickle(pickle_file_string='tsunami_betas', read_in_as_attribute='tsunami_betas')
                     self.combine_sensitivities_by_list()
 
         if found_tsunami_output == False:
@@ -361,7 +363,9 @@ class tsunami_job_object:
                 self.solver_debug = self.solver_debug + "_keno"
 
         if option == "calc_tsunami_keff_and_sens":
-            ###
+            ### Updating tsunami beta values
+            self.tsunami_betas = self.proposed_betas
+
             if "threshold" in modifier:
                 threshold_options_split = modifier.split("$")
                 if self.tsunami_threshold_function(threshold_options_split[1]):
@@ -379,6 +383,9 @@ class tsunami_job_object:
                 ### Updating solver debug
                 self.solver_debug = self.solver_debug + "_tsunami"
 
+            ### Writing out tsunami beta values for later pickup
+            ### Writing out betas to pickle
+            self.write_out_pickle(pickle_file_string='tsunami_betas', write_out_attribute='tsunami_betas')
         if option == "return_to_matlab":
             pass
 
