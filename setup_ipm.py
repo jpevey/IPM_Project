@@ -3,28 +3,19 @@ import os
 
 constraint_string = """function [c, ceq, DC, DCeq] = cyl_1d_cyl_constraint(variables)
 %%% This function calls a python function which:
-c = sum(1 - variables) -  10;
-% sum(fuel) <= 10
-% sum(1 - var) <= 10
-% sum(1 - var) -  10 <= 0
+% original constraint: c = sum(1 - variables) -  10;
+
 ceq = 0;
-
-DC = ones(20, 1) * -1;
-DCeq = zeros(20, 1);
-
-%%% Setting constraint to 0 for debugging
-%c = 0;
-%ceq = 0;
-
-%DC = zeros(20, 1);
-%DCeq = zeros(20, 1);"""
+c = -1 * sum(log10(variables)) - 4.00004343161981E+01;
+DC =  - 1./ variables;
+DCeq = zeros(20, 1);"""
 
 ipm_file_string = """function [x,fval,exitflag,output,lambda,grad,hessian] = cyl_1d_interior_point_algo()
 pyversion('/usr/bin/python3')
 %%% To get more from the output, copy the entire 1st line (minus function)
-x0 = ones(1, 20) * 0.1;
-lb = zeros(1, 20);
-ub = ones(1, 20);
+x0 = ones(1, 20) * log10(0.5);
+lb = ones(1, 20) * log(1e-4);
+ub = ones(1, 20) * log(1 - 1e-4);
 %OptimalityTolerance_Data = 0.00100
 %StepTolerance_Data = 0.01
 

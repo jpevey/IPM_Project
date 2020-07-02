@@ -6,9 +6,9 @@ from datetime import datetime
 import time
 import MT_Clutch_Tools_v1
 
-
 def evaluate_1d_cyl(proposed_betas):
     sfh = scale_file_handler.scale_file_handler()
+
     ### reading in current job information
     current_tsunami_job = tsunami_job_object(sfh, proposed_betas)
 
@@ -43,6 +43,7 @@ def evaluate_1d_cyl(proposed_betas):
         for material_location, beta_ in current_tsunami_job.beta_sensitivities:
             current_tsunami_job.beta_sensitivities = current_tsunami_job.beta_sensitivities *\
                                                      current_tsunami_job.tsunami_betas[material_location]
+
     negative_sensitivities = [float(x * -1 * float(current_tsunami_job.tsunami_keff)) for x in
                               current_tsunami_job.beta_sensitivities]
 
@@ -53,7 +54,6 @@ def evaluate_1d_cyl(proposed_betas):
 
     return float(current_tsunami_job.keff) * -1, negative_sensitivities
 
-
 class tsunami_job_object:
     def __init__(self, sfh, proposed_betas):
         self.sfh = sfh
@@ -61,6 +61,12 @@ class tsunami_job_object:
         self.solver_debug = "initialized"
         ### Reading in options file
         self.read_in_options('options.csv')
+
+        ### If dealing with log(beta) transform, converting proposed betas into values from 0-1 that is expected
+        if self.transform_betas_from_log10beta == 'True':
+            print("Before transformation:", self.proposed_betas)
+            self.proposed_betas = [10 ** i  for i in self.proposed_betas]
+            print("After transformation:", self.proposed_betas)
 
         ### Creating default material definitions
         self.default_materials_list = self.sfh.build_material_dictionaries(self.materials)
