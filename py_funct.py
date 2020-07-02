@@ -37,6 +37,12 @@ def evaluate_1d_cyl(proposed_betas):
 
     ### Mulitpliying all sensitivities by -1, because using fmincon in matlab
     print(current_tsunami_job.tsunami_keff)
+
+    ### Applying beta * beta_sense transform to sensitivities
+    if current_tsunami_job.sensitivity_transform == 'multiply_by_beta':
+        for material_location, beta_ in current_tsunami_job.beta_sensitivities:
+            current_tsunami_job.beta_sensitivities = current_tsunami_job.beta_sensitivities *\
+                                                     current_tsunami_job.tsunami_betas[material_location]
     negative_sensitivities = [float(x * -1 * float(current_tsunami_job.tsunami_keff)) for x in
                               current_tsunami_job.beta_sensitivities]
 
