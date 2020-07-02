@@ -3,6 +3,7 @@ import collections
 import pickle
 import scale_file_handler
 from datetime import datetime
+import math
 import time
 import MT_Clutch_Tools_v1
 
@@ -38,15 +39,18 @@ def evaluate_1d_cyl(proposed_betas):
     ### Mulitpliying all sensitivities by -1, because using fmincon in matlab
     print(current_tsunami_job.tsunami_keff)
 
-    ### Applying beta * beta_sense transform to sensitivities
+
+
+    ### Multiplying sensitivities * -1 * tsunami_keff, to get them from:
+    ### d delta k / k / d Beta to  - d delta k / d Beta, what matlab expects
+    negative_sensitivities = [float(x * -1 * float(current_tsunami_job.tsunami_keff)) for x in
+                              current_tsunami_job.beta_sensitivities]
+
+    ### Applying beta * beta_sense transform to sensitivities (for IPM expecting dk/dlog(B) form)
     if current_tsunami_job.sensitivity_transform == 'multiply_by_beta':
         for material_location, beta_ in current_tsunami_job.beta_sensitivities:
             current_tsunami_job.beta_sensitivities = current_tsunami_job.beta_sensitivities *\
                                                      current_tsunami_job.tsunami_betas[material_location]
-
-    negative_sensitivities = [float(x * -1 * float(current_tsunami_job.tsunami_keff)) for x in
-                              current_tsunami_job.beta_sensitivities]
-
     ### Turning the sensitivities into a matlab array
     # negative_sensitivities_ml = matlab.double(negative_sensitivities)
 
@@ -63,9 +67,9 @@ class tsunami_job_object:
         self.read_in_options('options.csv')
 
         ### If dealing with log(beta) transform, converting proposed betas into values from 0-1 that is expected
-        if self.transform_betas_from_log10beta == 'True':
+        if self.transform_betas_from_ln == 'True':
             print("Before transformation:", self.proposed_betas)
-            self.proposed_betas = [10 ** i  for i in self.proposed_betas]
+            self.proposed_betas = [math.exp(i) for i in self.proposed_betas]
             print("After transformation:", self.proposed_betas)
 
         ### Creating default material definitions

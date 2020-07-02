@@ -37,4 +37,4 @@ sensitivity_dict_mt_tsunami, sensitivity_dict_mt_tsunami
 ### return_to_matlab
 evaluate_options, solve_og_linear_keff#return_to_matlab
 sensitivity_transform, 'multiply_by_beta'
-transform_betas_from_log10beta, True
+transform_betas_from_ln, True
