@@ -43,7 +43,7 @@ def evaluate_1d_cyl(proposed_betas):
 
     ### Multiplying sensitivities * -1 * tsunami_keff, to get them from:
     ### d delta k / k / d Beta to  - d delta k / d Beta, what matlab expects
-    negative_sensitivities = [float(x * -1 * float(current_tsunami_job.keff)) for x in
+    negative_sensitivities = [float(x * -1 * float(current_tsunami_job.tsunami_keff)) for x in
                               current_tsunami_job.beta_sensitivities]
 
     ### Applying beta * beta_sense transform to sensitivities (for IPM expecting dk/dlog(B) form)
