@@ -43,7 +43,7 @@ def evaluate_1d_cyl(proposed_betas):
 
     ### Multiplying sensitivities * -1 * tsunami_keff, to get them from:
     ### d delta k / k / d Beta to  - d delta k / d Beta, what matlab expects
-    negative_sensitivities = [float(x * -1 * float(current_tsunami_job.tsunami_keff)) for x in
+    negative_sensitivities = [float(x * -1 * float(current_tsunami_job.keff)) for x in
                               current_tsunami_job.beta_sensitivities]
 
     ### Applying beta * beta_sense transform to sensitivities (for IPM expecting dk/dlog(B) form)
@@ -378,6 +378,9 @@ class tsunami_job_object:
                 ### Updating solver debug
                 self.solver_debug = self.solver_debug + "_keno"
 
+            ### Setting the returned keff to be keno, since it was run
+            self.keff = self.keno_keff
+
         if option == "calc_tsunami_keff_and_sens":
             ### Updating tsunami beta values
             self.tsunami_betas = self.proposed_betas
@@ -404,6 +407,9 @@ class tsunami_job_object:
             ### Writing out tsunami beta values for later pickup
             ### Writing out betas to pickle
             self.write_out_pickle(pickle_file_string='tsunami_betas', write_out_attribute='tsunami_betas')
+
+            ### Setting the returned keff to be tsunami k, since it was run
+            self.keff = self.tsunami_keff
         if option == "return_to_matlab":
             pass
 
