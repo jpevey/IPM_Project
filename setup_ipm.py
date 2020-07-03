@@ -21,6 +21,10 @@ pyversion('/usr/bin/python3')
 x0 = ones(1, 20) * log(0.5);
 lb = ones(1, 20) * log(1e-4);
 ub = ones(1, 20) * log(1 - 1e-4);
+
+x0 = ones(1, 20) * 0.1;
+lb = zeros(1, 20);
+ub = ones(1, 20);
 %OptimalityTolerance_Data = 0.00100
 %StepTolerance_Data = 0.01
 

@@ -3,9 +3,9 @@ write_out_file, True
 sdf_file, tsunami_run_.sdf
 output_file_string, interior_point_test_output.csv
 ### keno_keff#tsunami_keff
-output_csv_file_headers,time#solver_debug#keff#linear_keff#original_linear_keff#material_1_sense*20#material_2_sense*20#beta_sens*20#betas*20#proposed_betas*20
+output_csv_file_headers,time#solver_debug#keff#linear_keff#tsunami_keff#material_1_sense*20#material_2_sense*20#beta_sens*20#betas*20#proposed_betas*20
 ### stainless_steel_304, poison, fuel, moderator
-materials,poison#fuel/moderator:25/75
+materials,void#fuel/moderator:25/75
 ### keno_threshold - Maximum change in beta value where a keno job is forced to run
 ### i.e, if the maximum % change in beta is above this value, keno is forced to run
 keno_threshold, 0.10
@@ -35,6 +35,7 @@ sensitivity_dict_mt_tsunami, sensitivity_dict_mt_tsunami
 ### calc_tsunami_keff_and_sens:threshold$lin_to_keno_k_sig_uncert%3
 ### solve_linear_keff
 ### return_to_matlab
-evaluate_options, solve_og_linear_keff#return_to_matlab
-sensitivity_transform, 'multiply_by_beta'
-transform_betas_from_ln, True
+evaluate_options, solve_og_linear_keff#calc_tsunami_keff_and_sens#return_to_matlab
+### 'multiply_by_beta'
+sensitivity_transform, 'None'
+transform_betas_from_ln, False
