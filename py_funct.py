@@ -143,7 +143,10 @@ class tsunami_job_object:
                     print("self.sensitivities", self.sensitivities)
                     print("self.sensitivity_dict_mt_tsunami", self.sensitivity_dict_mt_tsunami)
                     print("Loading in tsunami beta values")
-                    self.read_in_pickle(pickle_file_string='tsunami_betas', read_in_as_attribute='tsunami_betas')
+                    try:
+                        self.read_in_pickle(pickle_file_string='tsunami_betas', read_in_as_attribute='tsunami_betas')
+                    except:
+                        print("unable to read in tsunami beta pickle")
                     self.combine_sensitivities_by_list()
 
         if found_tsunami_output == False:
