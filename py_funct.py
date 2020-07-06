@@ -191,6 +191,21 @@ class tsunami_job_object:
                               0.1, 0.1, 0.1, 0.1, 0.1,
                               0.1, 0.1, 0.1, 0.1, 0.1]
         self.tsunami_keff = 0.17738
+
+        ### Trying to read in tsunami keff and tsunami betas from pickles in folder
+
+        try:
+            self.read_in_pickle(pickle_file_string='tsunami_keff', read_in_as_attribute='tsunami_keff')
+        except:
+            print("Failed to load in tsunami_keff, using default")
+
+        try:
+            self.read_in_pickle(pickle_file_string='tsunami_betas', read_in_as_attribute='tsunami_betas')
+        except:
+            print("Failed to load in tsunami_betas, using default")
+
+
+
         self.update_sensitivities()
         self.combine_sensitivities_by_list()
 
@@ -410,6 +425,10 @@ class tsunami_job_object:
 
             ### Setting the returned keff to be tsunami k, since it was run
             self.keff = self.tsunami_keff
+
+            ### Writing out updated tsunami_keff for later pickup
+            self.write_out_pickle(pickle_file_string=self.tsunami_keff,
+                                  write_out_attribute='tsunami_keff')
         if option == "return_to_matlab":
             pass
 

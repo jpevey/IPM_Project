@@ -100,6 +100,8 @@ matlab -nodisplay -nodesktop -nojvm -nosplash -r 'run cyl_1d_interior_point_algo
 def main():
     print("Setting up IPM matlab functions!")
 
+    print("Version selection: V1, original constraint/objective, V2, swapped constraint/objective")
+
     print("Creating matlab functions...")
     print("...   IPM main script")
     file_ = open("cyl_1d_interior_point_algo.m", 'w')
