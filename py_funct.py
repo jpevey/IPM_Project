@@ -511,7 +511,7 @@ class tsunami_job_object:
             if solve_type == 'tsunami':
                 if self.multithreaded_clutch_on_necluster == 'True':
                     print("Solving MT Tsunami")
-                    file_name_flag = "mt_tsunami_"
+                    file_name_flag = self.mt_clutch_file_flag
                     ### Solving with MT Tsunami tools
                     mt_tools = MT_Clutch_Tools_v1.MT_Clutch_Tools(template_file="tsunami_template_file.inp",
                                                                   neutrons_per_generation=25000,
