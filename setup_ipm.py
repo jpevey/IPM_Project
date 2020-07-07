@@ -17,11 +17,6 @@ DCeq = zeros(20, 1);
 
 ipm_file_string = """function [x,fval,exitflag,output,lambda,grad,hessian] = cyl_1d_interior_point_algo()
 pyversion('/usr/bin/python3')
-%%% To get more from the output, copy the entire 1st line (minus function)
-x0 = ones(1, 20) * 0.1;
-lb = zeros(1, 20);
-ub = ones(1, 20);
-
 x0 = ones(1, 20) * 0.1;
 lb = zeros(1, 20);
 ub = ones(1, 20);
