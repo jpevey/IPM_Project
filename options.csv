@@ -39,3 +39,5 @@ evaluate_options, solve_og_linear_keff#calc_keno_keff#calc_tsunami_keff_and_sens
 ### 'multiply_by_beta'
 sensitivity_transform, 'None'
 transform_betas_from_ln, False
+use_default_sensitivities, True
+use_default_sensitivities_sensitivity_file, 'sensitivity_dict_mt_tsunami_default'

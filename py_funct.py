@@ -670,8 +670,13 @@ class tsunami_job_object:
     def update_sensitivities(self):
         print("Updating sensitivites v2")
         if self.multithreaded_clutch_on_necluster == 'True':
-            self.read_in_pickle(pickle_file_string=self.sensitivity_dict_mt_tsunami,
+            try:
+                self.read_in_pickle(pickle_file_string=self.sensitivity_dict_mt_tsunami,
                                 read_in_as_attribute='sensitivities')
+            except:
+                if self.use_default_sensitivities == 'True':
+                    self.read_in_pickle(pickle_file_string=self.use_default_sensitivities_sensitivity_file,
+                                    read_in_as_attribute='sensitivities')
         else:
             self.sensitivities = self.sfh.parse_sdf_file_into_dict(self.sdf_file)
             self.combine_sensitivities_by_list()
