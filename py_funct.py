@@ -430,7 +430,7 @@ class tsunami_job_object:
             self.keff = self.tsunami_keff
 
             ### Writing out updated tsunami_keff for later pickup
-            self.write_out_pickle(pickle_file_string=self.tsunami_keff,
+            self.write_out_pickle(pickle_file_string='tsunami_keff',
                                   write_out_attribute='tsunami_keff')
         if option == "return_to_matlab":
             pass
