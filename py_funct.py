@@ -48,7 +48,7 @@ def evaluate_1d_cyl(proposed_betas):
 
     ### Applying beta * beta_sense transform to sensitivities (for IPM expecting dk/dlog(B) form)
     if current_tsunami_job.sensitivity_transform == 'multiply_by_beta':
-        for material_location, beta_ in current_tsunami_job.beta_sensitivities:
+        for material_location, beta_ in enumerate(current_tsunami_job.beta_sensitivities):
             current_tsunami_job.beta_sensitivities = current_tsunami_job.beta_sensitivities *\
                                                      current_tsunami_job.tsunami_betas[material_location]
     ### Turning the sensitivities into a matlab array
@@ -756,16 +756,17 @@ class tsunami_job_object:
         material_betas_default = self.tsunami_betas
         proposed_betas = self.proposed_betas
         original_keff = float(self.tsunami_keff)
-        # print("self.proposed_changes",self.proposed_changes )
-
+        print("self.proposed_changes", self.proposed_changes)
+        print("self.tsunami_betas", self.tsunami_betas)
+        print("self.tsunami_keff", self.tsunami_keff)
         self.combine_sensitivities_by_list()
 
         expected_delta_k = 0.0
         print(
-            "percent_change_in_poison, percent_change_in_fuel_mod, expected_change_psn, expected_change_fm, expected_delta_k")
-        for material_count, beta_change in enumerate(proposed_betas):
-            percent_change_in_mat_1 = beta_change / material_betas_default[material_count] - 1
-            percent_change_in_mat_2 = (1 - beta_change) / (1 - material_betas_default[material_count]) - 1
+            "percent_change_in_poison, percent_change_in_fuel_mod, expected_change_psn, expected_change_fm, expected_delta_k, tsunami beta, proposed beta, tsunami_keff")
+        for material_count, proposed_beta in enumerate(proposed_betas):
+            percent_change_in_mat_1 = proposed_beta / material_betas_default[material_count] - 1
+            percent_change_in_mat_2 = (1 - proposed_beta) / (1 - material_betas_default[material_count]) - 1
 
             expected_change_mat_1 = percent_change_in_mat_1 * self.material_1_sensitivities[
                 material_count] * original_keff
@@ -774,7 +775,7 @@ class tsunami_job_object:
             expected_delta_k += expected_change_mat_1 + expected_change_mat_2
             # print(material_count, expected_change_psn, expected_change_fm)
             print(percent_change_in_mat_1, percent_change_in_mat_2, expected_change_mat_1, expected_change_mat_2,
-                  expected_delta_k)
+                  expected_delta_k, material_betas_default[material_count], proposed_beta, original_keff)
         print("linear keff guess", expected_delta_k + original_keff)
 
         return expected_delta_k + original_keff
