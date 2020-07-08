@@ -453,8 +453,9 @@ class tsunami_job_object:
                 uncert_multiplier = 3.0
 
             ### Checking if lin keff is outside of keno keff threshold
-            if(float(self.linear_keff) > float(self.keno_keff) + float(uncert_multiplier) * float(self.keno_keff_uncert)) or \
-                    (float(self.linear_keff) < float(self.keno_keff) - float(uncert_multiplier) * float(self.keno_keff_uncert)):
+            print("Tsunami threshold test: lin_keff, keno_keff, threshold",self.linear_keff, self.keno_keff, float(uncert_multiplier) * float(self.keno_keff_uncert))
+            if(float(self.linear_keff) >= float(self.keno_keff) - float(uncert_multiplier) * float(self.keno_keff_uncert) and \
+                    (float(self.linear_keff) <= float(self.keno_keff) + float(uncert_multiplier) * float(self.keno_keff_uncert))):
                 print("Linear keff is outside of acceptable bounds of keno keff, rerunning Tsunami")
                 self.tsunami_threshold = True
                 return self.tsunami_threshold
