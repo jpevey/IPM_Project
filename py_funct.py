@@ -51,11 +51,12 @@ def evaluate_1d_cyl(proposed_betas):
         for material_location, beta_ in enumerate(current_tsunami_job.beta_sensitivities):
             current_tsunami_job.beta_sensitivities = current_tsunami_job.beta_sensitivities *\
                                                      current_tsunami_job.tsunami_betas[material_location]
-    ### Turning the sensitivities into a matlab array
-    # negative_sensitivities_ml = matlab.double(negative_sensitivities)
+
+    ### Applying a penalty term to both keff and the beta derivs, if specified
+    if current_tsunami_job.forcing_term == 'True':
+        current_tsunami_job.keff, negative_sensitivities = current_tsunami_job.forcing_term_v1(current_tsunami_job.keff, negative_sensitivities, float(current_tsunami_job.forcing_term_gamma))
 
     #### returning negative keff and sensitivities
-
     return float(current_tsunami_job.keff) * -1, negative_sensitivities
 
 class tsunami_job_object:
@@ -866,6 +867,34 @@ class tsunami_job_object:
         material_dict = scale_handler.make_data_dict(flag_list, material_string_list)
 
         scale_handler.create_scale_input_given_target_dict(template_file_string, file_name_flag, material_dict)
+
+
+### From Dr. Sobes email:
+    #function[penalty, penalty_grad] = fPenalty(y, gamma)
+    #penalty = gamma * sqrt(sum(y. * (1 - y)));
+    #penalty_grad = gamma * (-2 * y + ones(size(y))) / (2 * sqrt(sum(y. * (1 - y))));
+    #end
+    def forcing_term_v1(self, keff, beta_derivs, gamma):
+        adjusted_betas = []
+        penalty_sum = 0.0
+        penalty_grads = []
+        for deriv in beta_derivs:
+            penalty_sum += deriv * (1 - deriv)
+
+        sqrt_penalty_sum = math.sqrt(penalty_sum)
+        for deriv in beta_derivs:
+            penalty_grad = gamma * (-2 * deriv + 1) / (2 * sqrt_penalty_sum)
+            penalty_grads.append(penalty_grad)
+
+        penalty = gamma * sqrt_penalty_sum
+        penalized_keff = penalty + keff
+
+        ### Applying gradient penalties, they are added to the betas derivs
+        derivs_with_penalty = []
+        for deriv, penalty in zip(beta_derivs, penalty_grads):
+            derivs_with_penalty.append(deriv + penalty)
+
+        return penalized_keff, derivs_with_penalty
 
     def create_header_string(self, header):
         if header == 'time':
