@@ -3,7 +3,7 @@ write_out_file, True
 sdf_file, tsunami_run_.sdf
 output_file_string, interior_point_test_output.csv
 ### keno_keff#tsunami_keff
-output_csv_file_headers,time#solver_debug#keff#original_linear_keff#keno_keff#tsunami_keff#linear_keff#material_1_sense*20#material_2_sense*20#beta_sens*20#betas*20#proposed_betas*20
+output_csv_file_headers,time#solver_debug#keff#original_linear_keff#keno_keff#tsunami_keff#linear_keff#material_1_sense*20#material_2_sense*20#beta_sens*20#betas*20#proposed_betas*20#pre_forcing_keff#pre_forcing_betas*20
 ### stainless_steel_304, poison, fuel, moderator
 materials,void#fuel/moderator:25/75
 ### keno_threshold - Maximum change in beta value where a keno job is forced to run

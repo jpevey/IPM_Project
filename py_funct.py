@@ -6,6 +6,7 @@ from datetime import datetime
 import math
 import time
 import MT_Clutch_Tools_v1
+import copy
 
 def evaluate_1d_cyl(proposed_betas):
     sfh = scale_file_handler.scale_file_handler()
@@ -33,6 +34,15 @@ def evaluate_1d_cyl(proposed_betas):
     #### saving current job data to file
     #### add timestamp to output
     # save_data_to_outputcsv()
+    ### Applying a penalty term to both keff and the beta derivs, if specified
+    if current_tsunami_job.forcing_term == 'True':
+        current_tsunami_job.keff,\
+        current_tsunami_job.beta_sensitivities,\
+        current_tsunami_job.pre_forcing_keff,\
+        current_tsunami_job.pre_forcing_betas =\
+            current_tsunami_job.forcing_term_v1(current_tsunami_job.keff,
+                                                current_tsunami_job.beta_sensitivities,
+                                                float(current_tsunami_job.forcing_term_gamma))
 
     current_tsunami_job.write_to_csv()
 
@@ -52,9 +62,6 @@ def evaluate_1d_cyl(proposed_betas):
             current_tsunami_job.beta_sensitivities = current_tsunami_job.beta_sensitivities *\
                                                      current_tsunami_job.tsunami_betas[material_location]
 
-    ### Applying a penalty term to both keff and the beta derivs, if specified
-    if current_tsunami_job.forcing_term == 'True':
-        current_tsunami_job.keff, negative_sensitivities = current_tsunami_job.forcing_term_v1(current_tsunami_job.keff, negative_sensitivities, float(current_tsunami_job.forcing_term_gamma))
 
     #### returning negative keff and sensitivities
     return float(current_tsunami_job.keff) * -1, negative_sensitivities
@@ -875,11 +882,12 @@ class tsunami_job_object:
     #penalty_grad = gamma * (-2 * y + ones(size(y))) / (2 * sqrt(sum(y. * (1 - y))));
     #end
     def forcing_term_v1(self, keff, beta_derivs, gamma):
-        adjusted_betas = []
+        original_keff = copy.deepcopy(keff)
+        original_beta_derivs = copy.deepcopy(beta_derivs)
         penalty_sum = 0.0
         penalty_grads = []
         for deriv in beta_derivs:
-            penalty_sum += deriv * (1 - deriv)
+            penalty_sum += float(deriv) * (1 - float(deriv))
 
         sqrt_penalty_sum = math.sqrt(penalty_sum)
         for deriv in beta_derivs:
@@ -894,7 +902,7 @@ class tsunami_job_object:
         for deriv, penalty in zip(beta_derivs, penalty_grads):
             derivs_with_penalty.append(deriv + penalty)
 
-        return penalized_keff, derivs_with_penalty
+        return penalized_keff, derivs_with_penalty, original_keff, original_beta_derivs
 
     def create_header_string(self, header):
         if header == 'time':
@@ -951,6 +959,17 @@ class tsunami_job_object:
                 beta_str += str(beta * -1) + ","
             return beta_str[:-1]
 
+        if "pre_forcing_keff" in header:
+            beta_str = ""
+            for beta in self.pre_forcing_keff:
+                beta_str += str(beta * -1) + ","
+            return beta_str[:-1]
+
+        if "pre_forcing_betas" in header:
+            beta_str = ""
+            for beta in self.pre_forcing_betas:
+                beta_str += str(beta * -1) + ","
+            return beta_str[:-1]
 
 
         return header + "_FAILED"
