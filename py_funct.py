@@ -36,25 +36,27 @@ def evaluate_1d_cyl(proposed_betas):
     # save_data_to_outputcsv()
     ### Applying a penalty term to both keff and the beta derivs, if specified
     if current_tsunami_job.forcing_term == 'True':
-        current_tsunami_job.keff,\
-        current_tsunami_job.beta_sensitivities,\
+        current_tsunami_job.keff_penalty,\
+        current_tsunami_job.sensitivity_penalty,\
         current_tsunami_job.pre_forcing_keff,\
         current_tsunami_job.pre_forcing_betas =\
             current_tsunami_job.forcing_term_v1(current_tsunami_job.keff,
-                                                current_tsunami_job.beta_sensitivities,
+                                                current_tsunami_job.proposed_betas,
                                                 float(current_tsunami_job.forcing_term_gamma))
 
     current_tsunami_job.write_to_csv()
 
-    ### Mulitpliying all sensitivities by -1, because using fmincon in matlab
-    print(current_tsunami_job.tsunami_keff)
+### If incorporating a forcing term with the derivs
+    if current_tsunami_job.forcing_term == 'True':
+        ### Multiplying sensitivities * -1 * tsunami_keff, to get them from:
+        ### d delta k / k / d Beta to  - d delta k / d Beta, what matlab expects
+        negative_sensitivities = [float(deriv * -1 * float(current_tsunami_job.tsunami_keff) + penalty) for deriv, penalty in
+                                  zip(current_tsunami_job.beta_sensitivities, current_tsunami_job.sensitivity_penalty) ]
 
-
-
-    ### Multiplying sensitivities * -1 * tsunami_keff, to get them from:
-    ### d delta k / k / d Beta to  - d delta k / d Beta, what matlab expects
-    negative_sensitivities = [float(x * -1 * float(current_tsunami_job.tsunami_keff)) for x in
-                              current_tsunami_job.beta_sensitivities]
+### If not incorporating a forcing term with the derivs
+    else:
+        negative_sensitivities = [float(deriv * -1 * float(current_tsunami_job.tsunami_keff)) for deriv in
+                                current_tsunami_job.beta_sensitivities]
 
     ### Applying beta * beta_sense transform to sensitivities (for IPM expecting dk/dlog(B) form)
     if current_tsunami_job.sensitivity_transform == 'multiply_by_beta':
@@ -62,6 +64,9 @@ def evaluate_1d_cyl(proposed_betas):
             current_tsunami_job.beta_sensitivities = current_tsunami_job.beta_sensitivities *\
                                                      current_tsunami_job.tsunami_betas[material_location]
 
+### if incorporating a penalty term, adding it to the keff that's returned
+    if current_tsunami_job.forcing_term == 'True':
+        return float(current_tsunami_job.keff) * -1 + current_tsunami_job.keff_penalty, negative_sensitivities
 
     #### returning negative keff and sensitivities
     return float(current_tsunami_job.keff) * -1, negative_sensitivities
@@ -881,28 +886,30 @@ class tsunami_job_object:
     #penalty = gamma * sqrt(sum(y. * (1 - y)));
     #penalty_grad = gamma * (-2 * y + ones(size(y))) / (2 * sqrt(sum(y. * (1 - y))));
     #end
-    def forcing_term_v1(self, keff, beta_derivs, gamma):
+    def forcing_term_v1(self, keff, beta_values, gamma):
         original_keff = copy.deepcopy(keff)
-        original_beta_derivs = copy.deepcopy(beta_derivs)
+        original_beta_derivs = copy.deepcopy(self.beta_sensitivities)
         penalty_sum = 0.0
         penalty_grads = []
-        for deriv in beta_derivs:
-            penalty_sum += float(deriv) * (1 - float(deriv))
+        for beta_value in beta_values:
+            penalty_sum += float(beta_value) * (1 - float(beta_value))
 
         sqrt_penalty_sum = math.sqrt(penalty_sum)
-        for deriv in beta_derivs:
-            penalty_grad = gamma * (-2 * deriv + 1) / (2 * sqrt_penalty_sum)
+        for deriv in beta_values:
+            penalty_grad_num = gamma * (-2 * deriv + 1)
+            penalty_grad_denom = (2 * sqrt_penalty_sum)
+            penalty_grad = penalty_grad_num / penalty_grad_denom
+            print("penalty_grad_num, penalty_grad_denom", deriv, sqrt_penalty_sum, penalty_grad_num, penalty_grad_denom)
             penalty_grads.append(penalty_grad)
 
-        penalty = gamma * sqrt_penalty_sum
-        penalized_keff = penalty + keff
+        keff_penalty = gamma * sqrt_penalty_sum
 
         ### Applying gradient penalties, they are added to the betas derivs
         derivs_with_penalty = []
-        for deriv, penalty in zip(beta_derivs, penalty_grads):
+        for deriv, penalty in zip(self.beta_sensitivities, penalty_grads):
             derivs_with_penalty.append(deriv + penalty)
-
-        return penalized_keff, derivs_with_penalty, original_keff, original_beta_derivs
+        print("KEFF PENALTY:",keff_penalty, penalty_grads)
+        return keff_penalty, derivs_with_penalty, original_keff, original_beta_derivs
 
     def create_header_string(self, header):
         if header == 'time':
@@ -959,17 +966,13 @@ class tsunami_job_object:
                 beta_str += str(beta * -1) + ","
             return beta_str[:-1]
 
-        if "pre_forcing_keff" in header:
+        if "keff_penalty" in header:
+            return str(self.keff_penalty)
+
+        if "sensitivity_penalty" in header:
             beta_str = ""
-            for beta in self.pre_forcing_keff:
+            for beta in self.sensitivity_penalty:
                 beta_str += str(beta * -1) + ","
             return beta_str[:-1]
-
-        if "pre_forcing_betas" in header:
-            beta_str = ""
-            for beta in self.pre_forcing_betas:
-                beta_str += str(beta * -1) + ","
-            return beta_str[:-1]
-
 
         return header + "_FAILED"
