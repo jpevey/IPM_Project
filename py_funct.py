@@ -144,7 +144,7 @@ class tsunami_job_object:
 
                     print("Betas before and after reading in from pickle")
                     print(self.tsunami_betas)
-                    ### Reading in tsunami betas from pickle 
+                    ### Reading in tsunami betas from pickle
                     self.read_in_pickle(pickle_file_string='tsunami_betas', read_in_as_attribute='tsunami_betas')
                     print(self.tsunami_betas)
             ### If a MT tsunami job has been run, pull in those sensitivities
@@ -467,14 +467,15 @@ class tsunami_job_object:
 
             ### Checking if lin keff is outside of keno keff threshold
             print("Tsunami threshold test: lin_keff, keno_keff, threshold",self.linear_keff, self.keno_keff, float(uncert_multiplier) * float(self.keno_keff_uncert))
-            if(float(self.linear_keff) >= float(self.keno_keff) - float(uncert_multiplier) * float(self.keno_keff_uncert) and \
-                    (float(self.linear_keff) <= float(self.keno_keff) + float(uncert_multiplier) * float(self.keno_keff_uncert))):
-                print("Linear keff is outside of acceptable bounds of keno keff, rerunning Tsunami")
-                self.tsunami_threshold = True
-                return self.tsunami_threshold
-            else:
+            if(     (float(self.linear_keff) >= float(self.keno_keff) - float(uncert_multiplier) * float(self.keno_keff_uncert)) and \
+                    (float(self.linear_keff) <= float(self.keno_keff) + float(uncert_multiplier) * float(self.keno_keff_uncert))
+              ):
                 print("Linear keff is within acceptable bounds of keno keff, not rerunning Tsunami")
                 self.tsunami_threshold = False
+                return self.tsunami_threshold
+            else:
+                print("Linear keff is outside of acceptable bounds of keno keff, rerunning Tsunami")
+                self.tsunami_threshold = True
                 return self.tsunami_threshold
 
     def scale_solve(self, solve_type):

@@ -3,6 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="e22de3ef-53c2-4db1-afd7-5961effbab21" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/options.csv" beforeDir="false" afterPath="$PROJECT_DIR$/options.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/py_funct.py" beforeDir="false" afterPath="$PROJECT_DIR$/py_funct.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -115,8 +117,8 @@
         <item itemvalue="Python.scale_file_handler" />
         <item itemvalue="Python.py_funct" />
         <item itemvalue="Python.Build_Single_Input" />
+        <item itemvalue="Python.scale_file_handler" />
         <item itemvalue="Python.py_funct" />
-        <item itemvalue="Python.Build_Single_Input" />
       </list>
     </recent_temporary>
   </component>
