@@ -52,13 +52,13 @@ grep -a "final result" %%%input_string%%%.out > %%%input_string%%%_done.dat"""
                 file = file + ".sh"
             os.system('ssh -tt necluster.ne.utk.edu "cd ' + current_directory + ' && qsub ' + file + '"')
 
-    def run_mt_clutch_job(self, betas, number_of_cases, file_flag="mt_tsunami_"):
+    def run_mt_clutch_job(self, betas, number_of_cases, file_flag="mt_tsunami_", tsunami_template_file = "tsunami_template_default.inp"):
         ### Building template file for this case
         self.build_template_file_for_tsunami(betas,
                                              template_filename=self.template_file)
 
         ### building inputs, running, combining sdf into a dictionary
-        sdf_dict = self.build_run_and_combine_mt_clutch_runs(template_file_string="tsunami_template_default.inp",
+        sdf_dict = self.build_run_and_combine_mt_clutch_runs(template_file_string=tsunami_template_file,
                                                              file_flag=file_flag,
                                                              number_to_make=number_of_cases)
         return sdf_dict

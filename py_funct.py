@@ -202,10 +202,9 @@ class tsunami_job_object:
 
     def create_default_tsunami_object(self):
         print("Using default tsunami object")
-        self.tsunami_betas = [0.1, 0.1, 0.1, 0.1, 0.1,
-                              0.1, 0.1, 0.1, 0.1, 0.1,
-                              0.1, 0.1, 0.1, 0.1, 0.1,
-                              0.1, 0.1, 0.1, 0.1, 0.1]
+        self.tsunami_betas = []
+        for _ in range(len(self.proposed_betas)):
+            self.tsunami_betas.append(0.1)
         self.tsunami_keff = 0.17738
 
         ### Trying to read in tsunami keff and tsunami betas from pickles in folder
@@ -534,7 +533,8 @@ class tsunami_job_object:
                                                                   self.default_materials_list)
                     combined_sdf_dict = mt_tools.run_mt_clutch_job(betas=self.proposed_betas,
                                                                    number_of_cases=int(self.number_of_clutch_jobs),
-                                                                   file_flag=file_name_flag)
+                                                                   file_flag=file_name_flag,
+                                                                   run_mt_clutch_job = self.options["mt_tsunami_template_filename"])
                     ### Pickling this file for later
                     self.combined_sdf_dict = combined_sdf_dict
                     self.write_out_pickle(pickle_file_string=self.sensitivity_dict_mt_tsunami,
@@ -617,7 +617,8 @@ class tsunami_job_object:
                                                                   self.default_materials_list)
                     combined_sdf_dict = mt_tools.run_mt_clutch_job(betas=self.proposed_betas,
                                                                    number_of_cases=int(self.number_of_clutch_jobs),
-                                                                   file_flag=file_name_flag)
+                                                                   file_flag=file_name_flag,
+                                                                   template_file_string = self.options["mt_tsunami_template_filename"])
                     ### Pickling this file for later
                     self.combined_sdf_dict = combined_sdf_dict
                     self.write_out_pickle(pickle_file_string=self.sensitivity_dict_mt_tsunami,

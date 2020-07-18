@@ -15,6 +15,7 @@ tsunami_threshold, 0.25
 ### tsunami and keno template file names
 tsunami_template_filename, tsunami_cyls_20_material_template.inp
 kenov_template_filename, kenov_cyls_20_material_template.inp
+mt_tsunami_template_filename, "tsunami_template_11x11_file.inp"
 ### unique flag to put on keno and tsunami runs
 keno_filename_flag, keno_run_
 tsunami_filename_flag, tsunami_run_
