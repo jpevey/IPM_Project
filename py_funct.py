@@ -896,11 +896,11 @@ class tsunami_job_object:
             penalty_sum += float(beta_value) * (1 - float(beta_value))
 
         sqrt_penalty_sum = math.sqrt(penalty_sum)
-        for deriv in beta_values:
-            penalty_grad_num = gamma * (-2 * deriv + 1)
+        for beta in beta_values:
+            penalty_grad_num = gamma * (-2 * beta + 1)
             penalty_grad_denom = (2 * sqrt_penalty_sum)
             penalty_grad = penalty_grad_num / penalty_grad_denom
-            print("penalty_grad_num, penalty_grad_denom", deriv, sqrt_penalty_sum, penalty_grad_num, penalty_grad_denom)
+            print("penalty_grad_num, penalty_grad_denom", beta, sqrt_penalty_sum, penalty_grad_num, penalty_grad_denom)
             penalty_grads.append(penalty_grad)
 
         keff_penalty = gamma * sqrt_penalty_sum
