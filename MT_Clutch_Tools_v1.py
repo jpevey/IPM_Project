@@ -15,7 +15,7 @@ import collections
 
 
 class MT_Clutch_Tools:
-    def __init__(self, template_file, neutrons_per_generation, skip_generations, list_of_material_dictionaries):
+    def __init__(self, template_file = "", neutrons_per_generation = 0, skip_generations= 0, list_of_material_dictionaries = ""):
         self.neutrons_per_generation = neutrons_per_generation
         self.skip_generations = skip_generations
         self.template_file = template_file

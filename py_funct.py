@@ -205,6 +205,7 @@ class tsunami_job_object:
         self.tsunami_betas = []
         for _ in range(len(self.proposed_betas)):
             self.tsunami_betas.append(0.1)
+        print(self.tsunami_betas)
         self.tsunami_keff = 0.17738
 
         ### Trying to read in tsunami keff and tsunami betas from pickles in folder
@@ -221,7 +222,7 @@ class tsunami_job_object:
 
 
 
-        self.update_sensitivities()
+        #self.update_sensitivities()
         self.combine_sensitivities_by_list()
 
         self.beta_sensitivities = self.calculate_sensitivities_2_materials_general()
@@ -828,6 +829,7 @@ class tsunami_job_object:
         materials_list = self.default_materials_list
 
         material_sens_lists = []
+
         ### For each material type in the problem location in the problem
         for mat_count, material_dict in enumerate(materials_list, start=1):
             ### Sum all poison and fuel/mod sensitivities
@@ -896,11 +898,11 @@ class tsunami_job_object:
             penalty_sum += float(beta_value) * (1 - float(beta_value))
 
         sqrt_penalty_sum = math.sqrt(penalty_sum)
-        for deriv in beta_values:
-            penalty_grad_num = gamma * (-2 * deriv + 1)
+        for beta in beta_values:
+            penalty_grad_num = gamma * (-2 * beta + 1)
             penalty_grad_denom = (2 * sqrt_penalty_sum)
             penalty_grad = penalty_grad_num / penalty_grad_denom
-            print("penalty_grad_num, penalty_grad_denom", deriv, sqrt_penalty_sum, penalty_grad_num, penalty_grad_denom)
+            print("beta, sqrt_penalty_sum, penalty_grad_num, penalty_grad_denom", beta, sqrt_penalty_sum, penalty_grad_num, penalty_grad_denom)
             penalty_grads.append(penalty_grad)
 
         keff_penalty = gamma * sqrt_penalty_sum
@@ -968,7 +970,7 @@ class tsunami_job_object:
             return beta_str[:-1]
 
         if "keff_penalty" in header:
-            return str(self.keff_penalty)
+            return str(self.pre_forcing_keff)
 
         if "sensitivity_penalty" in header:
             beta_str = ""
