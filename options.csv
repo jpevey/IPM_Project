@@ -1,8 +1,9 @@
-job_title, interior_point_test_
+wjob_title, interior_point_test_
 write_out_file, True
 sdf_file, tsunami_run_.sdf
 output_file_string, interior_point_test_output.csv
-### #keno_keff#tsunami_keff#linear_keff
+### keno_keff#tsunami_keff
+###
 output_csv_file_headers,time#solver_debug#keff#original_linear_keff#keno_keff#tsunami_keff#linear_keff#material_1_sense*121#material_2_sense*121#beta_sens*121#betas*121#proposed_betas*121#keff_penalty#sensitivity_penalty*121
 ### stainless_steel_304, poison, fuel, moderator
 materials,void#fuel/moderator:25/75
@@ -13,9 +14,9 @@ keno_threshold, 0.10
 ### i.e, if the maximum % change in beta is above this value, tsunami is forced to run
 tsunami_threshold, 0.25
 ### tsunami and keno template file names
-tsunami_template_filename, tsunami_cyls_121_material_template.inp
+tsunami_template_filename, tsunami_cyls_20_material_template.inp
 kenov_template_filename, kenov_cyls_121_material_template.inp
-mt_tsunami_template_filename, "tsunami_template_11x11_file.inp"
+mt_tsunami_template_filename, tsunami_template_default.inp
 ### unique flag to put on keno and tsunami runs
 keno_filename_flag, keno_run_
 tsunami_filename_flag, tsunami_run_
@@ -36,8 +37,7 @@ sensitivity_dict_mt_tsunami, sensitivity_dict_mt_tsunami
 ### calc_tsunami_keff_and_sens:threshold$lin_to_keno_k_sig_uncert%3
 ### solve_linear_keff
 ### return_to_matlab
-### #calc_keno_keff#calc_tsunami_keff_and_sens:threshold$lin_to_keno_k_sig_uncert%3#solve_linear_keff
-evaluate_options, solve_og_linear_keff#calc_keno_keff#calc_tsunami_keff_and_sens:threshold$lin_to_keno_k_sig_uncert%3#solve_linear_keff
+evaluate_options, solve_og_linear_keff#calc_keno_keff#calc_tsunami_keff_and_sens:threshold$lin_to_keno_k_sig_uncert%3#solve_linear_keff#
 #return_to_matlab
 ### 'multiply_by_beta'
 sensitivity_transform, 'None'
@@ -46,4 +46,4 @@ use_default_sensitivities, True
 use_default_sensitivities_sensitivity_file, sensitivity_dict_mt_tsunami_default
 mt_clutch_file_flag, mt_tsunami_
 forcing_term, True
-forcing_term_gamma, 1.0
+forcing_term_gamma, 0
