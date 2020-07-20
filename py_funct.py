@@ -222,7 +222,7 @@ class tsunami_job_object:
 
 
 
-        #self.update_sensitivities()
+        self.update_sensitivities()
         self.combine_sensitivities_by_list()
 
         self.beta_sensitivities = self.calculate_sensitivities_2_materials_general()
@@ -536,7 +536,7 @@ class tsunami_job_object:
                     combined_sdf_dict = mt_tools.run_mt_clutch_job(betas=self.proposed_betas,
                                                                    number_of_cases=int(self.number_of_clutch_jobs),
                                                                    file_flag=file_name_flag,
-                                                                   run_mt_clutch_job = self.options["mt_tsunami_template_filename"])
+                                                                   tsunami_template_file = self.mt_tsunami_template_filename)
                     ### Pickling this file for later
                     self.combined_sdf_dict = combined_sdf_dict
                     self.write_out_pickle(pickle_file_string=self.sensitivity_dict_mt_tsunami,
@@ -620,7 +620,7 @@ class tsunami_job_object:
                     combined_sdf_dict = mt_tools.run_mt_clutch_job(betas=self.proposed_betas,
                                                                    number_of_cases=int(self.number_of_clutch_jobs),
                                                                    file_flag=file_name_flag,
-                                                                   template_file_string = self.options["mt_tsunami_template_filename"])
+                                                                   tsunami_template_file = self.mt_tsunami_template_filename)
                     ### Pickling this file for later
                     self.combined_sdf_dict = combined_sdf_dict
                     self.write_out_pickle(pickle_file_string=self.sensitivity_dict_mt_tsunami,
