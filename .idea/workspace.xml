@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="e22de3ef-53c2-4db1-afd7-5961effbab21" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/options.csv" beforeDir="false" afterPath="$PROJECT_DIR$/options.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/py_funct.py" beforeDir="false" afterPath="$PROJECT_DIR$/py_funct.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -21,7 +20,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="11x11_grid_IPM" />
+        <entry key="$PROJECT_DIR$" value="swapped_constraint_and_obj" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />

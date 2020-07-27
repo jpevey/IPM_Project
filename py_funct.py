@@ -905,12 +905,7 @@ class tsunami_job_object:
 
         keff_penalty = gamma * sqrt_penalty_sum
 
-        ### Applying gradient penalties, they are added to the betas derivs
-        derivs_with_penalty = []
-        for deriv, penalty in zip(self.beta_sensitivities, penalty_grads):
-            derivs_with_penalty.append(deriv + penalty)
-        print("KEFF PENALTY:",keff_penalty, penalty_grads)
-        return keff_penalty, derivs_with_penalty, original_keff, original_beta_derivs
+        return keff_penalty, penalty_grads, original_keff, original_beta_derivs
 
     def create_header_string(self, header):
         if header == 'time':
